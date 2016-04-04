@@ -2,12 +2,11 @@
 const ServerConnectorPlugin = require('../../lib/ServerConnectorPlugin');
 const AKP48 = GLOBAL.AKP48 || null;
 const irc = require('irc');
-const uuid = require('node-uuid');
 
 class IRC extends ServerConnectorPlugin {
-  constructor(config) {
+  constructor(config, id) {
     super('IRC', AKP48);
-    this._id = uuid.v4();
+    this._id = id;
     var self = this;
     if(!config || !config.server || !config.nick) {
       throw new Error('Required options missing from config!');

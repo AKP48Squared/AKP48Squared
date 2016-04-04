@@ -1,3 +1,4 @@
+require('./lib/polyfill'); //load polyfill
 var AKP48 = require('./lib/AKP48');
 var config;
 
