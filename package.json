@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/AKPWebDesign/AKP48-The-Second/issues"
   },
-  "homepage": "https://github.com/AKPWebDesign/AKP48-The-Second#readme"
+  "homepage": "https://github.com/AKPWebDesign/AKP48-The-Second#readme",
+  "dependencies": {
+    "bluebird": "^3.3.4",
+    "enum": "^2.3.0",
+    "glob": "^7.0.3",
+    "jsonfile": "^2.2.3",
+    "node-uuid": "^1.4.7"
+  }
 }

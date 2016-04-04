@@ -2,11 +2,11 @@ var AKP48 = require('./lib/AKP48');
 var config;
 
 try {
-  config = require('config.json');
+  config = require('./config.json');
 } catch(e) {
-  //no config, so set config to empty object.
-  config = {};
+  //no config, so set config to null.
+  config = null;
 }
 
 //load the bot.
-var bot = new AKP48(config).start();
+GLOBAL.AKP48 = new AKP48(config);

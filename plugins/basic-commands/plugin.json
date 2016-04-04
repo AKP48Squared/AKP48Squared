@@ -1,0 +1,6 @@
+{
+  "name": "basic-commands",
+  "type": "MessageResponder",
+  "description": "Basic commands for AKP48.",
+  "main": "main.js"
+}

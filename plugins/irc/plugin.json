@@ -1,0 +1,6 @@
+{
+  "name": "irc",
+  "type": "ServerConnector",
+  "description": "Used to connect AKP48 to an IRC server.",
+  "main": "main.js"
+}
