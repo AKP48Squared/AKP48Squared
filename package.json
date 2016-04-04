@@ -1,0 +1,19 @@
+{
+  "name": "akp48",
+  "version": "3.0.0",
+  "description": "I'm rewriting AKP48 from the ground up.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AKPWebDesign/AKP48-The-Second.git"
+  },
+  "author": "Austin Peterson <austin@akpwebdesign.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AKPWebDesign/AKP48-The-Second/issues"
+  },
+  "homepage": "https://github.com/AKPWebDesign/AKP48-The-Second#readme"
+}
