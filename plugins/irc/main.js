@@ -62,6 +62,7 @@ IRC.prototype.createContextFromMessage = function (message, to) {
 };
 
 IRC.prototype.getChannelConfig = function (channel) {
+  if(!this._config.chanConfig) {return {};}
   return this._config.chanConfig[channel] || {};
 };
 
