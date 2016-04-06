@@ -1,0 +1,6 @@
+{
+  "name": "logger",
+  "type": "MessageHandler",
+  "description": "Logs messages to the console.",
+  "main": "main.js"
+}

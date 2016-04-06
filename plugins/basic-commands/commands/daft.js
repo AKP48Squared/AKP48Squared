@@ -7,6 +7,7 @@ Daft.prototype.respond = function (context) {
   if(context.text.length) {
     noun = context.text;
   }
+  context.noPrefix = true;
   return `${noun}, are you daft?`;
 };
 
