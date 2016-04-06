@@ -24,6 +24,7 @@
     "jsonfile": "^2.2.3",
     "node-uuid": "^1.4.7",
     "restify": "^4.0.4",
+    "skype-sdk": "https://devportalassets.azureedge.net/files/skype-sdk.tar.gz",
     "winston": "^2.2.0"
   }
 }
