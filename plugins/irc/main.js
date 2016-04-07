@@ -10,7 +10,7 @@ class IRC extends ServerConnectorPlugin {
     this._defaultCommandDelimiters = ['!', '.'];
     var self = this;
     if(!config || !config.server || !config.nick) {
-      GLOBAL.logger.error('${self._pluginName}|${self._id}: Required server and/or nick options missing from config!');
+      GLOBAL.logger.error(`${self._pluginName}|${self._id}: Required server and/or nick options missing from config!`);
       this._error = true;
       return;
     }
