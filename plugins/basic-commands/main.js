@@ -15,7 +15,10 @@ class BasicCommands extends MessageHandlerPlugin {
 }
 
 BasicCommands.prototype.handleCommand = function (message, context) {
+  GLOBAL.logger.silly(`${this._pluginName}: Received command.`);
+
   // prepare text.
+  context.originalText = context.text;
   var text = context.text.split(' ');
   var command = text[0];
   text.shift();
@@ -25,11 +28,15 @@ BasicCommands.prototype.handleCommand = function (message, context) {
 
   for (var cmd in this.commands) {
     if (this.commands.hasOwnProperty(cmd)) {
+      GLOBAL.logger.silly(`${this._pluginName}: Checking ${cmd} command for ${command}.`);
       if(this.commands[cmd].names.includes(command)) {
+        GLOBAL.logger.silly(`${this._pluginName}: Found command for ${command}.`);
         this._AKP48.sendMessage(context.instanceId, context.to, this.commands[cmd].respond(context), context);
       }
     }
   }
+
+  context.text = context.originalText;
 };
 
 module.exports = BasicCommands;
