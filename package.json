@@ -20,11 +20,8 @@
     "bluebird": "^3.3.4",
     "enum": "^2.3.0",
     "glob": "^7.0.3",
-    "irc": "^0.5.0",
     "jsonfile": "^2.2.3",
     "node-uuid": "^1.4.7",
-    "restify": "^4.0.4",
-    "skype-sdk": "https://devportalassets.azureedge.net/files/skype-sdk.tar.gz",
     "winston": "^2.2.0"
   }
 }

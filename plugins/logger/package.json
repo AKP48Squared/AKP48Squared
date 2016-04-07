@@ -1,0 +1,11 @@
+{
+  "name": "akp48-plugin-logger",
+  "version": "1.0.0",
+  "description": "Logger plugin for AKP48. Logs messages using AKP48's global logger object.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Austin Peterson <austin@akpwebdesign.com>",
+  "license": "MIT"
+}

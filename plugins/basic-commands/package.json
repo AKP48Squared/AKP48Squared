@@ -1,0 +1,15 @@
+{
+  "name": "akp48-plugin-basic-commands",
+  "version": "1.0.0",
+  "description": "Basic Commands plugin for AKP48. Adds a few simple commands to the bot.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Austin Peterson <austin@akpwebdesign.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.3.4",
+    "glob": "^7.0.3"
+  }
+}
