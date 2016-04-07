@@ -28,12 +28,6 @@ class Skype extends ServerConnectorPlugin {
       bot.reply(`Hello, ${data.fromDisplayName}! For help, say "!help".`, true);
     });
 
-    this._botService.on('userAdded', (bot, data) => {
-      if(data.targets.includes('28:'+config.appId)) {
-        bot.reply(`Hello everyone! I'm AKP48, a friendly bot, here to respond to commands. For help, say "!help".`);
-      }
-    });
-
     this._botService.on('personalMessage', (bot, data) => {
       self._AKP48.onMessage(data.content, self.createContextFromMessage(bot, data));
     });
