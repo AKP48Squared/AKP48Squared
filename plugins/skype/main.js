@@ -9,7 +9,8 @@ class Skype extends ServerConnectorPlugin {
     this._id = id;
     this._config = config;
     if(!config || !config.appId || !config.appSecret) {
-      GLOBAL.logger.error('Required options missing from config!');
+      GLOBAL.logger.error(`${this._pluginName}: Required appId and/or appSecret options missing from config!`);
+      this._error = true;
       return;
     }
     var self = this;
@@ -41,8 +42,6 @@ class Skype extends ServerConnectorPlugin {
     this._server.use(skype.verifySkypeCert());
     this._server.post('/v1/chat', skype.messagingHandler(this._botService));
     this._port = config.port || 9658;
-    this._server.listen(this._port);
-    GLOBAL.logger.info('Skype server listening for incoming requests on port ' + this._port);
 
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
       context.bot.reply(message);
@@ -51,11 +50,20 @@ class Skype extends ServerConnectorPlugin {
   }
 
   connect() {
-    GLOBAL.logger.debug('Skype is always connected; dropping request.');
+    if(this._error) {
+      GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
+      return;
+    }
+    this._server.listen(this._port);
+    GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Server listening for incoming requests on port ${this._port}.`);
   }
 
   disconnect() {
-    GLOBAL.logger.debug('Skype cannot be disconnected; dropping request.');
+    if(this._error) {
+      GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
+      return;
+    }
+    this._server.close();
   }
 }
 
