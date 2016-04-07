@@ -1,0 +1,6 @@
+{
+  "name": "irc-commands",
+  "type": "MessageHandler",
+  "description": "IRC-specific commands for AKP48.",
+  "main": "main.js"
+}
