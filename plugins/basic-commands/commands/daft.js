@@ -3,12 +3,13 @@ function Daft() {
 }
 
 Daft.prototype.respond = function (context) {
-  var noun = context.nick;
+  var noun = '';
   if(context.text.length) {
-    noun = context.text;
+    noun = `${context.text}: `;
+    context.noPrefix = true;
   }
-  context.noPrefix = true;
-  return `${noun}, are you daft?`;
+
+  return `${noun}are you daft?`;
 };
 
 module.exports = Daft;
