@@ -99,7 +99,7 @@ GitHubListener.prototype.handle = function (branch, data) {
   var url = data.compare;
 
   var msg = `${c.pink('[GitHub]')} ${commits} ${data.forced && !data.created ? 'force ' : ''}pushed to ${data.created ? 'new ' : ''}`;
-  msg += `${data.ref.startsWith("refs/tags/") ? 'tag ' : 'branch '}${c.bold(branch)} by ${data.pusher.name} `;
+  msg += `${data.ref.startsWith('refs/tags/') ? 'tag ' : 'branch '}${c.bold(branch)} by ${data.pusher.name} `;
   msg += `(${url})`;
 
   for (var i = 0; i < data.commits.length && i < 3; i++) {
@@ -108,7 +108,7 @@ GitHubListener.prototype.handle = function (branch, data) {
       var end = _m.indexOf("\n");
       var commit_msg = c.green(`[${_c.id.substring(0,7)}] `);
       commit_msg += `${_c.author.username}: ${_m.substring(0, end === -1 ? _m.length : end)}`;
-      msg += "\n".append(commit_msg);
+      msg += `\ncommit_msg`;
   };
 
   GLOBAL.logger.debug(`${this._pluginName}: Sending alert.`);
