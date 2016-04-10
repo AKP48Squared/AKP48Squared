@@ -1,0 +1,14 @@
+{
+  "name": "akp48-plugin-twitch",
+  "version": "1.0.0",
+  "description": "Twitch plugin for AKP48.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Austin Peterson <austin@akpwebdesign.com>",
+  "license": "MIT",
+  "dependencies": {
+    "tmi.js": "0.0.29"
+  }
+}
