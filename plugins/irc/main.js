@@ -42,7 +42,7 @@ class IRC extends ServerConnectorPlugin {
           myNick: self._client.nick,
           instanceId: self._id
         });
-        self._AKP48.saveConfig(self._config, self._id);
+        self._AKP48.saveConfig(self._config, self._id, true);
       });
     });
 
@@ -53,7 +53,7 @@ class IRC extends ServerConnectorPlugin {
         if(index > -1) {
           self._config.channels.splice(index, 1);
         }
-        self._AKP48.saveConfig(self._config, self._id);
+        self._AKP48.saveConfig(self._config, self._id, true);
       }
     });
 
