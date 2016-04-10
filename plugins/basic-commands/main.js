@@ -29,7 +29,7 @@ BasicCommands.prototype.handleCommand = function (message, context) {
   for (var cmd in this.commands) {
     if (this.commands.hasOwnProperty(cmd)) {
       GLOBAL.logger.silly(`${this._pluginName}: Checking ${cmd} command for ${command}.`);
-      if(this.commands[cmd].names.includes(command)) {
+      if(this.commands[cmd].names.includes(command.toLowerCase())) {
         GLOBAL.logger.silly(`${this._pluginName}: Found command for ${command}.`);
         this._AKP48.sendMessage(context.instanceId, context.to, this.commands[cmd].respond(context), context);
       }

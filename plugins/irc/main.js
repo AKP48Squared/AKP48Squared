@@ -113,7 +113,7 @@ IRC.prototype.getChannelConfig = function (channel) {
 IRC.prototype.isTextACommand = function (text, channel) {
   var delimit = this.getChannelConfig(channel).commandDelimiters || this._config.commandDelimiters || this._defaultCommandDelimiters;
   for (var i = 0; i < delimit.length; i++) {
-    if(text.startsWith(delimit[i])) {
+    if(text.toLowerCase().startsWith(delimit[i].toLowerCase())) {
       return delimit[i].length;
     }
   }
