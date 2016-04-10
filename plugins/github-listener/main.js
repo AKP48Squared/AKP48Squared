@@ -26,7 +26,15 @@ class GitHubListener extends BackgroundTaskPlugin {
       this._listener = GitHubHook({
         path: this._config.path,
         port: this._config.port,
-        secret: this._config.secret
+        secret: this._config.secret,
+        logger: { //define a logger object, so the module doesn't just use console directly.
+          log: function(msg){
+            GLOBAL.logger.silly(`${self._pluginName}|GitHubHook: `+msg);
+          },
+          error: function(msg){
+            GLOBAL.logger.error(`${self._pluginName}|GitHubHook: `+msg);
+          }
+        }
       });
 
       GLOBAL.logger.info(`${this._pluginName}: Listening for Webhooks from GitHub.`);
