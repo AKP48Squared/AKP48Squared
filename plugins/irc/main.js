@@ -38,10 +38,7 @@ class IRC extends ServerConnectorPlugin {
       self._client.join(channel, function() {
         var joinMsg = `Hello, everyone! I'm AKP48! I respond to commands and generally try to be helpful. For more information, say ".help"!`;
         self._client.say(channel, joinMsg);
-        self._AKP48.sentMessage(channel, joinMsg, {
-          myNick: self._client.nick,
-          instanceId: self._id
-        });
+        self._AKP48.sentMessage(channel, joinMsg, {myNick: self._client.nick, instanceId: self._id});
         self._AKP48.saveConfig(self._config, self._id, true);
       });
     });
@@ -65,6 +62,23 @@ class IRC extends ServerConnectorPlugin {
       if(!context.noPrefix) {message = `${context.nick}: ${message}`;}
       self._client.say(to, message);
       self._AKP48.sentMessage(to, message, context);
+    });
+
+    this._AKP48.on('emote_'+this._id, function(to, message, context) {
+      self._client.action(to, message);
+      self._AKP48.sentMessage(to, message, context);
+    });
+
+    this._AKP48.on('alert', function(message) {
+      for (var i = 0; i < self._config.channels.length; i++) {
+        var chan = self._config.channels[i];
+        if(self._config.chanConfig && self._config.chanConfig[chan]) {
+          if(self._config.chanConfig[chan].alert) {
+            self._client.say(chan, message);
+            self._AKP48.sentMessage(chan, message, {instanceId: self._id, myNick: self._client.nick});
+          }
+        }
+      }
     });
   }
 
