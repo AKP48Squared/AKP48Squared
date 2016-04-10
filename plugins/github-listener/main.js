@@ -88,7 +88,7 @@ GitHubListener.prototype.shouldUpdate = function (branch) {
       return false;
   }
 
-  return compare(branch, updateBranch);
+  return this.compare(branch, updateBranch);
 };
 
 GitHubListener.prototype.handle = function (branch, data) {
