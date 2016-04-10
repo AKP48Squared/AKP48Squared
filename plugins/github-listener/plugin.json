@@ -1,0 +1,6 @@
+{
+  "name": "github-listener",
+  "type": "BackgroundTask",
+  "description": "Listens for GitHub webhooks and can tell AKP48 when to reload plugins.",
+  "main": "main.js"
+}
