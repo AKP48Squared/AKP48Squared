@@ -40,7 +40,7 @@ class GitHubListener extends BackgroundTaskPlugin {
         if(data.deleted) {
           return;
         }
-        GLOBAL.logger.silly(`${this._pluginName}: Received Webhook: ref => ${ref}.`);
+        GLOBAL.logger.silly(`${self._pluginName}: Received Webhook: ref => ${ref}.`);
 
         var branch = ref.substring(ref.indexOf('/', 5) + 1);
 
@@ -108,7 +108,7 @@ GitHubListener.prototype.handle = function (branch, data) {
       var end = _m.indexOf("\n");
       var commit_msg = c.green(`[${_c.id.substring(0,7)}] `);
       commit_msg += `${_c.author.username}: ${_m.substring(0, end === -1 ? _m.length : end)}`;
-      msg += `\ncommit_msg`;
+      msg += `\n${commit_msg}`;
   };
 
   GLOBAL.logger.debug(`${this._pluginName}: Sending alert.`);
