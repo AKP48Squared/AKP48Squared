@@ -1,6 +1,7 @@
 'use strict';
 const BackgroundTaskPlugin = require('../../lib/BackgroundTaskPlugin');
 const GitHubHook = require('githubhook');
+const c = require('irc-colors');
 
 class GitHubListener extends BackgroundTaskPlugin {
   constructor(AKP48, config) {
@@ -30,7 +31,7 @@ class GitHubListener extends BackgroundTaskPlugin {
 
       GLOBAL.logger.info(`${this._pluginName}: Listening for Webhooks from GitHub.`);
       GLOBAL.logger.debug(`${this._pluginName}: Listening at ${this._config.path} on ${this._config.port}.`);
-      GLOBAL.logger.silly(`${this._pluginName}: Listening for repo ${this._config.repository} and branch ${this._config.branch}.`);
+      GLOBAL.logger.silly(`${this._pluginName}: Listening for repo ${this._config.repository}, branch ${this._config.branch}.`);
 
       this._listener.listen();
 
@@ -91,7 +92,80 @@ GitHubListener.prototype.shouldUpdate = function (branch) {
 };
 
 GitHubListener.prototype.handle = function (branch, data) {
-  //TODO.
+  GLOBAL.logger.info(`${this._pluginName}: Handling Webhook for branch ${branch}.`);
+
+  //send out alert.
+  var commits = `${data.commits.length} commit`.pluralize(data.commits.length);
+  var url = data.compare;
+
+  var msg = `${c.pink('[GitHub]')} ${commits} ${data.forced && !data.created ? 'force ' : ''}pushed to ${data.created ? 'new ' : ''}`;
+  msg += `${data.ref.startsWith("refs/tags/") ? 'tag ' : 'branch '}${c.bold(branch)} by ${data.pusher.name} `;
+  msg += `(${url})`;
+
+  for (var i = 0; i < data.commits.length && i < 3; i++) {
+      var _c = data.commits[data.commits.length - 1 - i];
+      var _m = _c.message;
+      var end = _m.indexOf("\n");
+      var commit_msg = c.green(`[${_c.id.substring(0,7)}] `);
+      commit_msg += `${_c.author.username}: ${_m.substring(0, end === -1 ? _m.length : end)}`;
+      msg += "\n".append(commit_msg);
+  };
+
+  GLOBAL.logger.debug(`${this._pluginName}: Sending alert.`);
+
+  this._AKP48.sendMessage(null, null, msg, {isAlert: true});
+
+  /** TODO: Everything after here.
+  if (!this.gitAPI.isRepo()) {
+      return;
+  }
+
+  var changing_branch = branch !== this.gitAPI.getBranch();
+  var update = this.autoUpdate && (data.commits.length !== 0 || changing_branch);
+
+  if (!update) {
+      return;
+  }
+
+  var shutdown = changing_branch;
+  var npm = changing_branch;
+  var hot_files = ['server.js', 'GitProcessor.js', 'InstanceManager.js', 'i18n.js'];
+
+  if (!shutdown) {
+      data.commits.some(function (commit) {
+          commit.modified.some(function (file) {
+              if (hot_files.indexOf(file) !== -1) {
+                  shutdown = true;
+              } else if (file === 'package.json') {
+                  npm = true;
+              }
+              return shutdown;
+          });
+          return shutdown;
+      });
+  }
+
+  this.log.info(i18n.getString("gitProcessor_updateToBranch").append(branch));
+
+  // Fetch, Checkout
+  if (!this.gitAPI.checkout(branch)) {
+      return;
+  }
+
+  //attempt to update submodules.
+  this.gitAPI.updateSubmodules();
+
+  if (npm) {
+      this.log.info(i18n.getString("gitProcessor_npmInstall"));
+      exec('npm install');
+  }
+
+  if (shutdown) {
+      manager.shutdownAll(i18n.getString("gitProcessor_updating"));
+  } else {
+      manager.reloadAll();
+  }
+  **/
 };
 
 //called when we are told we're unloading.
