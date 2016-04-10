@@ -1,6 +1,7 @@
 'use strict';
 const ServerConnectorPlugin = require('../../lib/ServerConnectorPlugin');
 const Discordie = require('discordie');
+var c = require('irc-colors');
 
 class Discord extends ServerConnectorPlugin {
   constructor(config, id, AKP48) {
@@ -27,6 +28,8 @@ class Discord extends ServerConnectorPlugin {
 
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
       if(!context.noPrefix) {message = `${context.rawMessage.author.mention}: ${message}`;}
+
+      message = c.stripColorsAndStyle(message);
 
       // if we're configured to send a "typing" message first, send it, otherwise just send the message.
       if(self._config.typingTimeout) {

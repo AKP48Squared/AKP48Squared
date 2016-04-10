@@ -2,6 +2,7 @@
 const ServerConnectorPlugin = require('../../lib/ServerConnectorPlugin');
 const restify = require('restify');
 const skype = require('skype-sdk');
+var c = require('irc-colors');
 
 class Skype extends ServerConnectorPlugin {
   constructor(config, id, AKP48) {
@@ -44,6 +45,7 @@ class Skype extends ServerConnectorPlugin {
     this._port = config.port || 9658;
 
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
+      message = c.stripColorsAndStyle(message);
       context.bot.reply(message);
       self._AKP48.sentMessage(to, message, context);
     });
