@@ -5,3 +5,5 @@ function DOTAFreeHeroes() {
 DOTAFreeHeroes.prototype.respond = function () {
   return 'All of them.';
 };
+
+module.exports = DOTAFreeHeroes;
