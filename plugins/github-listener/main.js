@@ -213,6 +213,8 @@ GitHubListener.prototype.handle = function (branch, data) {
         self._AKP48.reload();
       }
     });
+  } else {
+    this._AKP48.reload();
   }
 };
 
@@ -265,6 +267,7 @@ GitHubListener.prototype.unload = function () {
   return new Promise(function (resolve) {
     if(self._listener) {
       self._listener.stop();
+      delete self._listener;
     }
     resolve();
   });
