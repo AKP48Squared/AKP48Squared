@@ -159,6 +159,7 @@ GitHubListener.prototype.handle = function (branch, data) {
         var com = data.commits[commit];
         for (var file in com.modified) {
           if (com.modified.hasOwnProperty(file)) {
+            console.log(`file: ${file}; hot_files: ${hot_files}; index: ${hot_files.indexOf(file)}`);
             if(hot_files.indexOf(file) !== -1) {
               shutdown = true;
             } else if (file.endsWith('package.json')) {
