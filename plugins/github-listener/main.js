@@ -1,8 +1,10 @@
 'use strict';
 const BackgroundTaskPlugin = require('../../lib/BackgroundTaskPlugin');
-const GitHubHook = require('githubhook');
-const getRepoInfo = require('git-repo-info');
 const c = require('irc-colors');
+const getRepoInfo = require('git-repo-info');
+const GitHubHook = require('githubhook');
+const glob = require('glob');
+const path = require('path');
 const shell = require('shelljs');
 
 class GitHubListener extends BackgroundTaskPlugin {
@@ -104,6 +106,7 @@ GitHubListener.prototype.shouldUpdate = function (branch) {
 };
 
 GitHubListener.prototype.handle = function (branch, data) {
+  var self = this;
   GLOBAL.logger.info(`${this._pluginName}: Handling Webhook for branch ${branch}.`);
 
   //send out alert.
@@ -129,53 +132,70 @@ GitHubListener.prototype.handle = function (branch, data) {
 
 
   if (!shell.which('git') || !this._isRepo) {
-      return;
+    GLOBAL.logger.debug(`${this._pluginName}: Not a git repo; stopping update.`);
+    return;
   }
 
   var changing_branch = branch !== this.getBranch();
-  var update = this.autoUpdate && (data.commits.length !== 0 || changing_branch);
+  var update = this._config.autoUpdate && (data.commits.length !== 0 || changing_branch);
+
+  GLOBAL.logger.silly(`${this._pluginName}: Is changing branch? ${changing_branch}.`);
+  GLOBAL.logger.silly(`${this._pluginName}: Is updating? ${update}.`);
 
   if (!update) {
-      return;
+    GLOBAL.logger.debug(`${this._pluginName}: Nothing to update; stopping update.`);
+    return;
   }
 
   var shutdown = changing_branch;
   var npm = changing_branch;
-  var hot_files = ['app.js', 'lib/AKP48.js', 'polyfill.js'];
+  var hot_files = ['app.js', 'lib/AKP48.js', 'lib/polyfill.js'];
 
   if (!shutdown) {
-      data.commits.some(function (commit) {
-          commit.modified.some(function (file) {
-              if (hot_files.indexOf(file) !== -1) {
-                  shutdown = true;
-              } else if (file === 'package.json') {
-                  npm = true;
-              }
-              return shutdown;
-          });
-          return shutdown;
+    data.commits.some(function (commit) {
+      commit.modified.some(function (file) {
+        if (hot_files.indexOf(file) !== -1) {
+          shutdown = true;
+        } else if (file.endsWith('package.json')) {
+          npm = true;
+        }
+        return shutdown;
       });
+      return shutdown;
+    });
   }
 
   GLOBAL.logger.debug(`${this._pluginName}: Updating to branch "${branch}".`);
 
   // Fetch, Checkout
   if (!this.checkout(branch)) {
-      return;
+    return;
   }
-
-  //attempt to update submodules.
-  this.updateSubmodules();
 
   if (npm) {
-      GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
-      shell.exec('npm install');
-  }
+    GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
+    shell.exec('npm install');
+    glob('plugins/*/package.json', function(err, files) {
+      if(err) {GLOBAL.logger.error(`${this._pluginName}: Glob error: "${err}".`);return;}
 
-  if (shutdown) {
-      this._AKP48.shutdown(`I'm updating! :3`);
-  } else {
-      this._AKP48.reload();
+      //two separate loops because shell is doing something weird if I do it all as one loop.
+      //first loop resolves paths to full absolute paths.
+      for (var i = 0; i < files.length; i++) {
+        files[i] = path.dirname(path.resolve(files[i]));
+      }
+
+      //second loop CDs into each directory and runs npm install.
+      for (var j = 0; j < files.length; j++) {
+        shell.cd(files[j]);
+        shell.exec('npm install');
+      }
+
+      if (shutdown) {
+        self._AKP48.shutdown(`I'm updating! :3`);
+      } else {
+        self._AKP48.reload();
+      }
+    });
   }
 };
 
@@ -220,10 +240,6 @@ GitHubListener.prototype.checkout = function (branch) {
     GLOBAL.logger.debug(`${this._pluginName}: Successfully reset to branch "${branch}".`);
   }
   return true;
-};
-
-GitHubListener.prototype.updateSubmodules = function () {
-  shell.exec('git submodule update');
 };
 
 //called when we are told we're unloading.
