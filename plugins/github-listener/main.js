@@ -153,17 +153,33 @@ GitHubListener.prototype.handle = function (branch, data) {
   var hot_files = ['app.js', 'lib/AKP48.js', 'lib/polyfill.js'];
 
   if (!shutdown) {
-    data.commits.some(function (commit) {
-      commit.modified.some(function (file) {
-        if (hot_files.indexOf(file) !== -1) {
-          shutdown = true;
-        } else if (file.endsWith('package.json')) {
-          npm = true;
+    
+    for (var commit in data.commits) {
+      if (data.commits.hasOwnProperty(commit)) {
+        var c = data.commits[c];
+        for (var file in c.modified) {
+          if (c.modified.hasOwnProperty(file)) {
+            if(hot_files.indexOf(file) !== -1) {
+              shutdown = true;
+            } else if (file.endsWith('package.json')) {
+              npm = true;
+            }
+          }
         }
-        return shutdown;
-      });
-      return shutdown;
-    });
+      }
+    }
+
+    // data.commits.some(function (commit) {
+    //   commit.modified.some(function (file) {
+    //     if (hot_files.indexOf(file) !== -1) {
+    //       shutdown = true;
+    //     } else if (file.endsWith('package.json')) {
+    //       npm = true;
+    //     }
+    //     return shutdown;
+    //   });
+    //   return shutdown;
+    // });
   }
 
   GLOBAL.logger.debug(`${this._pluginName}: Updating to branch "${branch}".`);
@@ -173,7 +189,7 @@ GitHubListener.prototype.handle = function (branch, data) {
     return;
   }
 
-  if (npm) {
+  if (npm || shutdown) {
     GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
     shell.exec('npm install');
     glob('plugins/*/package.json', function(err, files) {
