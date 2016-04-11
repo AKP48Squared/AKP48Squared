@@ -5,7 +5,7 @@ const skype = require('skype-sdk');
 var c = require('irc-colors');
 
 class Skype extends ServerConnectorPlugin {
-  constructor(config, id, AKP48) {
+  constructor(config, id, AKP48, persistentObjects) {
     super('Skype', AKP48);
     this._id = id;
     this._config = config;
@@ -16,15 +16,23 @@ class Skype extends ServerConnectorPlugin {
     }
     var self = this;
     this._defaultCommandDelimiters = ['!', '.'];
-    this._botService = new skype.BotService({
-      messaging: {
-        botId: '28:'+config.appId,
-        serverUrl : 'https://apis.skype.com',
-        requestTimeout : 15000,
-        appId: config.appId,
-        appSecret: config.appSecret
-      }
-    });
+    if(persistentObjects) {
+      this._botService = persistentObjects.botService;
+      this._botService.removeAllListeners('contactAdded');
+      this._botService.removeAllListeners('personalMessage');
+      this._botService.removeAllListeners('groupMessage');
+      this._connected = true;
+    } else {
+      this._botService = new skype.BotService({
+        messaging: {
+          botId: '28:'+config.appId,
+          serverUrl : 'https://apis.skype.com',
+          requestTimeout : 15000,
+          appId: config.appId,
+          appSecret: config.appSecret
+        }
+      });
+    }
 
     this._botService.on('contactAdded', (bot, data) => {
       bot.reply(`Hello, ${data.fromDisplayName}! For help, say "!help".`, true);
@@ -38,7 +46,12 @@ class Skype extends ServerConnectorPlugin {
       self._AKP48.onMessage(data.content, self.createContextFromMessage(bot, data));
     });
 
-    this._server = restify.createServer();
+    if(persistentObjects) {
+      this._server = persistentObjects.server;
+    } else {
+      this._server = restify.createServer();
+    }
+
     //this._server.use(skype.ensureHttps(true));
     this._server.use(skype.verifySkypeCert());
     this._server.post('/v1/chat', skype.messagingHandler(this._botService));
@@ -56,8 +69,12 @@ class Skype extends ServerConnectorPlugin {
       GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
       return;
     }
-    this._server.listen(this._port);
-    GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Server listening for incoming requests on port ${this._port}.`);
+    if(this._connected) {
+      GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Using previous server.`);
+    } else {
+      this._server.listen(this._port);
+      GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Server listening for incoming requests on port ${this._port}.`);
+    }
   }
 
   disconnect() {
@@ -99,6 +116,13 @@ Skype.prototype.isTextACommand = function (text) {
   }
 
   return false;
+};
+
+Skype.prototype.getPersistentObjects = function () {
+  return {
+    botService: this._botService,
+    server: this._server
+  };
 };
 
 module.exports = Skype;

@@ -5,6 +5,7 @@ const getRepoInfo = require('git-repo-info');
 const GitHubHook = require('githubhook');
 const glob = require('glob');
 const path = require('path');
+const Promise = require('bluebird'); //jshint ignore:line
 const shell = require('shelljs');
 
 class GitHubListener extends BackgroundTaskPlugin {
@@ -244,7 +245,13 @@ GitHubListener.prototype.checkout = function (branch) {
 
 //called when we are told we're unloading.
 GitHubListener.prototype.unload = function () {
-  //TODO.
+  var self = this;
+  return new Promise(function (resolve) {
+    if(self._listener) {
+      self._listener.stop();
+    }
+    resolve();
+  });
 };
 
 module.exports = GitHubListener;

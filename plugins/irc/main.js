@@ -3,7 +3,7 @@ const ServerConnectorPlugin = require('../../lib/ServerConnectorPlugin');
 const irc = require('irc');
 
 class IRC extends ServerConnectorPlugin {
-  constructor(config, id, AKP48) {
+  constructor(config, id, AKP48, persistentObjects) {
     super('IRC', AKP48);
     this._id = id;
     this._config = config;
@@ -15,14 +15,24 @@ class IRC extends ServerConnectorPlugin {
       return;
     }
 
-    this._client = new irc.Client(config.server, config.nick, {
-      autoRejoin: false,
-      autoConnect: false,
-      port: config.port || 6667,
-      userName: config.userName || 'AKP48',
-      realName: config.realName || 'AKP48',
-      channels: config.channels || []
-    });
+    if(persistentObjects) {
+      this._client = persistentObjects.client;
+      this._client.removeAllListeners('message');
+      this._client.removeAllListeners('registered');
+      this._client.removeAllListeners('invite');
+      this._client.removeAllListeners('kick');
+      this._client.removeAllListeners('error');
+      this._connected = true;
+    } else {
+      this._client = new irc.Client(config.server, config.nick, {
+        autoRejoin: false,
+        autoConnect: false,
+        port: config.port || 6667,
+        userName: config.userName || 'AKP48',
+        realName: config.realName || 'AKP48',
+        channels: config.channels || []
+      });
+    }
 
     this._client.on('message', function(nick, to, text, message) {
       if(to === config.nick) { to = nick; }
@@ -87,7 +97,11 @@ class IRC extends ServerConnectorPlugin {
       GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
       return;
     }
-    this._client.connect();
+    if(this._connected) {
+      GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Using previous connection.`);
+    } else {
+      this._client.connect();
+    }
   }
 
   disconnect(msg) {
@@ -133,6 +147,12 @@ IRC.prototype.isTextACommand = function (text, channel) {
   }
 
   return false;
+};
+
+IRC.prototype.getPersistentObjects = function () {
+  return {
+    client: this._client
+  };
 };
 
 module.exports = IRC;

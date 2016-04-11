@@ -3,7 +3,7 @@ const ServerConnectorPlugin = require('../../lib/ServerConnectorPlugin');
 const irc = require('tmi.js');
 
 class Twitch extends ServerConnectorPlugin {
-  constructor(config, id, AKP48) {
+  constructor(config, id, AKP48, persistentObjects) {
     super('Twitch', AKP48);
     this._id = id;
     this._config = config;
@@ -19,7 +19,16 @@ class Twitch extends ServerConnectorPlugin {
       GLOBAL.logger.warn(`${self._pluginName}|${self._id}: No complete identity found in config! Are you sure this is what you want?`);
     }
 
-    this._client = new irc.client(config);
+    if(persistentObjects) {
+      this._client = persistentObjects.client;
+      this._client.removeAllListeners('chat');
+      this._client.removeAllListeners('connecting');
+      this._client.removeAllListeners('connected');
+      this._client.removeAllListeners('disconnected');
+      this._connected = true;
+    } else {
+      this._client = new irc.client(config);
+    }
 
     this._client.on('chat', function(to, user, text, sentFromSelf) {
       if(to === self._client.getUsername()) { to = user.username; }
@@ -61,7 +70,11 @@ class Twitch extends ServerConnectorPlugin {
       GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
       return;
     }
-    this._client.connect();
+    if(this._connected) {
+      GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Using previous connection.`);
+    } else {
+      this._client.connect();
+    }
   }
 
   disconnect(msg) {
@@ -107,6 +120,12 @@ Twitch.prototype.isTextACommand = function (text, channel) {
   }
 
   return false;
+};
+
+Twitch.prototype.getPersistentObjects = function () {
+  return {
+    client: this._client
+  };
 };
 
 module.exports = Twitch;
