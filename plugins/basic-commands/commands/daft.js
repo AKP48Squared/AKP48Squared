@@ -9,7 +9,7 @@ Daft.prototype.respond = function (context) {
     context.noPrefix = true;
   }
 
-  return `${noun}are you daft?`;
+  return `${noun}are you daft?`.toUpperCase();
 };
 
 module.exports = Daft;
