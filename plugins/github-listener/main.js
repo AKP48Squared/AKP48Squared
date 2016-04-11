@@ -195,23 +195,27 @@ GitHubListener.prototype.handle = function (branch, data) {
     glob('plugins/*/package.json', function(err, files) {
       if(err) {GLOBAL.logger.error(`${this._pluginName}: Glob error: "${err}".`);return;}
 
-      //two separate loops because shell is doing something weird if I do it all as one loop.
-      //first loop resolves paths to full absolute paths.
-      for (var i = 0; i < files.length; i++) {
-        files[i] = path.dirname(path.resolve(files[i]));
-      }
+      new Promise(function(resolve) {
+        //two separate loops because shell is doing something weird if I do it all as one loop.
+        //first loop resolves paths to full absolute paths.
+        for (var i = 0; i < files.length; i++) {
+          files[i] = path.dirname(path.resolve(files[i]));
+        }
 
-      //second loop CDs into each directory and runs npm install.
-      for (var j = 0; j < files.length; j++) {
-        shell.cd(files[j]);
-        shell.exec('npm install');
-      }
+        //second loop CDs into each directory and runs npm install.
+        for (var j = 0; j < files.length; j++) {
+          shell.cd(files[j]);
+          shell.exec('npm install');
+        }
 
-      if (shutdown) {
-        self._AKP48.shutdown(`I'm updating! :3`);
-      } else {
-        self._AKP48.reload();
-      }
+        resolve();
+      }).then(function(){
+        if (shutdown) {
+          self._AKP48.shutdown(`I'm updating! :3`);
+        } else {
+          self._AKP48.reload();
+        }
+      });
     });
   } else {
     this._AKP48.reload();
