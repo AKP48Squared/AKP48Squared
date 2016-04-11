@@ -23,7 +23,7 @@ class GitHubListener extends BackgroundTaskPlugin {
     }
 
     if(this._config.enabled) {
-      this._listener = GitHubHook({
+      this._listener = new GitHubHook({
         path: this._config.path,
         port: this._config.port,
         secret: this._config.secret,
@@ -69,7 +69,7 @@ GitHubListener.prototype.compare = function (original, other) {
       return original !== other.substring(1);
   }
 
-  var star = other.indexOf('*'), star2 = other.lastIndexOf('*'), string;
+  var star = other.indexOf('*'), star2 = other.lastIndexOf('*');
   if (star !== -1) {
       if (star2 > star) {
           return original.contains(other.substring(star + 1, star2 - 1));
@@ -113,11 +113,11 @@ GitHubListener.prototype.handle = function (branch, data) {
   for (var i = 0; i < data.commits.length && i < 3; i++) {
       var _c = data.commits[data.commits.length - 1 - i];
       var _m = _c.message;
-      var end = _m.indexOf("\n");
+      var end = _m.indexOf('\n');
       var commit_msg = c.green(`[${_c.id.substring(0,7)}] `);
       commit_msg += `${_c.author.username}: ${_m.substring(0, end === -1 ? _m.length : end)}`;
       msg += `\n${commit_msg}`;
-  };
+  }
 
   GLOBAL.logger.debug(`${this._pluginName}: Sending alert.`);
 
