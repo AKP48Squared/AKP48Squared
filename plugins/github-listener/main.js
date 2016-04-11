@@ -202,13 +202,24 @@ GitHubListener.prototype.handle = function (branch, data) {
           files[i] = path.dirname(path.resolve(files[i]));
         }
 
+        var proms = [];
+
         //second loop CDs into each directory and runs npm install.
         for (var j = 0; j < files.length; j++) {
           shell.cd(files[j]);
-          shell.exec('npm install');
+
+          proms.push(new Promise(function(resolve){ // jshint ignore:line
+            shell.exec('npm install', function(){
+              resolve();
+            });
+          }));
         }
 
-        resolve();
+        Promise.all(proms).then(function(){
+          resolve(); //resolve promise after all npm installs are finished.
+        });
+
+
       }).then(function(){
         if (shutdown) {
           self._AKP48.shutdown(`I'm updating! :3`);
