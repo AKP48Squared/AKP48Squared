@@ -161,7 +161,7 @@ GitHubListener.prototype.handle = function (branch, data) {
           if (com.modified.hasOwnProperty(file)) {
             if(hot_files.indexOf(com.modified[file]) !== -1) {
               shutdown = true;
-            } else if (file.endsWith('package.json')) {
+            } else if (file.endsWith('package.json') || file === 'package.json') {
               npm = true;
             }
           }
