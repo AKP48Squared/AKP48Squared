@@ -71,7 +71,6 @@ class IRC extends ServerConnectorPlugin {
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
       if(!context.noPrefix) {message = `${context.nick}: ${message}`;}
       self._client.say(to, message);
-      self._client.say(to, `This is a test.`);
       self._AKP48.sentMessage(to, message, context);
     });
 
