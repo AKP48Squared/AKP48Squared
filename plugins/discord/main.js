@@ -4,7 +4,7 @@ const Discordie = require('discordie');
 var c = require('irc-colors');
 
 class Discord extends ServerConnectorPlugin {
-  constructor(config, id, AKP48) {
+  constructor(config, id, AKP48, persistentObjects) {
     super('Discord', AKP48);
     this._id = id;
     this._config = config;
@@ -16,7 +16,14 @@ class Discord extends ServerConnectorPlugin {
       return;
     }
 
-    this._client = new Discordie();
+    if(persistentObjects){
+      this._client = persistentObjects.client;
+      this._client.Dispatcher.removeAllListeners('GATEWAY_READY');
+      this._client.Dispatcher.removeAllListeners('MESSAGE_CREATE');
+      this._connected = true;
+    } else {
+      this._client = new Discordie();
+    }
 
     this._client.Dispatcher.on('GATEWAY_READY', () => {
       GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Connected as ${this._client.User.username}.`);
@@ -50,8 +57,13 @@ class Discord extends ServerConnectorPlugin {
       GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
       return;
     }
-    GLOBAL.logger.silly(`${this._pluginName}|${this._id}: Connecting...`);
-    this._client.connect({token: this._config.token});
+    if(this._connected) {
+      GLOBAL.logger.silly(`${this._pluginName}|${this._id}: Reusing previous connection.`);
+      return;
+    } else {
+      GLOBAL.logger.silly(`${this._pluginName}|${this._id}: Connecting...`);
+      this._client.connect({token: this._config.token});
+    }
   }
 
   disconnect() {
@@ -106,6 +118,12 @@ Discord.prototype.isTextACommand = function (text, channel) {
   }
 
   return false;
+};
+
+Discord.prototype.getPersistentObjects = function () {
+  return {
+    client: this._client
+  };
 };
 
 module.exports = Discord;
