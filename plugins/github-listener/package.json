@@ -9,6 +9,7 @@
   "author": "Austin Peterson <austin@akpwebdesign.com>",
   "license": "MIT",
   "dependencies": {
+    "git-repo-info": "^1.1.2",
     "githubhook": "^1.5.1"
   }
 }

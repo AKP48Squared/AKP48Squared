@@ -1,7 +1,9 @@
 'use strict';
 const BackgroundTaskPlugin = require('../../lib/BackgroundTaskPlugin');
 const GitHubHook = require('githubhook');
+const getRepoInfo = require('git-repo-info');
 const c = require('irc-colors');
+const shell = require('shelljs');
 
 class GitHubListener extends BackgroundTaskPlugin {
   constructor(AKP48, config) {
@@ -42,6 +44,8 @@ class GitHubListener extends BackgroundTaskPlugin {
       GLOBAL.logger.silly(`${this._pluginName}: Listening for repo ${this._config.repository}, branch ${this._config.branch}.`);
 
       this._listener.listen();
+
+      this._isRepo = (getRepoInfo._findRepo('.') !== null);
 
       var self = this;
       this._listener.on(`push:${this._config.repository}`, function (ref, data) {
@@ -123,12 +127,12 @@ GitHubListener.prototype.handle = function (branch, data) {
 
   this._AKP48.sendMessage(null, null, msg, {isAlert: true});
 
-  /** TODO: Everything after here.
-  if (!this.gitAPI.isRepo()) {
+
+  if (!shell.which('git') || !this._isRepo) {
       return;
   }
 
-  var changing_branch = branch !== this.gitAPI.getBranch();
+  var changing_branch = branch !== this.getBranch();
   var update = this.autoUpdate && (data.commits.length !== 0 || changing_branch);
 
   if (!update) {
@@ -137,7 +141,7 @@ GitHubListener.prototype.handle = function (branch, data) {
 
   var shutdown = changing_branch;
   var npm = changing_branch;
-  var hot_files = ['server.js', 'GitProcessor.js', 'InstanceManager.js', 'i18n.js'];
+  var hot_files = ['app.js', 'lib/AKP48.js', 'polyfill.js'];
 
   if (!shutdown) {
       data.commits.some(function (commit) {
@@ -153,27 +157,73 @@ GitHubListener.prototype.handle = function (branch, data) {
       });
   }
 
-  this.log.info(i18n.getString("gitProcessor_updateToBranch").append(branch));
+  GLOBAL.logger.debug(`${this._pluginName}: Updating to branch "${branch}".`);
 
   // Fetch, Checkout
-  if (!this.gitAPI.checkout(branch)) {
+  if (!this.checkout(branch)) {
       return;
   }
 
   //attempt to update submodules.
-  this.gitAPI.updateSubmodules();
+  this.updateSubmodules();
 
   if (npm) {
-      this.log.info(i18n.getString("gitProcessor_npmInstall"));
-      exec('npm install');
+      GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
+      shell.exec('npm install');
   }
 
   if (shutdown) {
-      manager.shutdownAll(i18n.getString("gitProcessor_updating"));
+      this._AKP48.shutdown(`I'm updating! :3`);
   } else {
-      manager.reloadAll();
+      this._AKP48.reload();
   }
-  **/
+};
+
+GitHubListener.prototype.fetch = function () {
+  if(shell.exec('git fetch').code) {
+    GLOBAL.logger.error(`${this._pluginName}: Attempted git fetch failed!`);
+    return;
+  } else {
+    GLOBAL.logger.debug(`${this._pluginName}: Fetched latest code from git.`);
+  }
+  return true;
+};
+
+GitHubListener.prototype.getCommit = function () {
+  return getRepoInfo().sha;
+};
+
+GitHubListener.prototype.getBranch = function () {
+  return getRepoInfo().branch;
+};
+
+GitHubListener.prototype.getTag = function () {
+  return getRepoInfo().tag;
+};
+
+GitHubListener.prototype.checkout = function (branch) {
+  if (!branch || !this.fetch()) {
+    return;
+  }
+  if (this.getBranch() !== branch) {
+    if (shell.exec(`git checkout -q ${branch}`).code) {
+      GLOBAL.logger.error(`${this._pluginName}: Attempted git reset failed!`);
+      return;
+    } else {
+      GLOBAL.logger.debug(`${this._pluginName}: Successfully checked out branch "${branch}".`);
+    }
+  }
+  if ((this.getBranch() || this.getTag()) && shell.exec(`git reset -q origin/${branch} --hard`).code) {
+    GLOBAL.logger.error(`${this._pluginName}: Attempted git reset failed!`);
+    return;
+  } else {
+    GLOBAL.logger.debug(`${this._pluginName}: Successfully reset to branch "${branch}".`);
+  }
+  return true;
+};
+
+GitHubListener.prototype.updateSubmodules = function () {
+  shell.exec('git submodule update');
 };
 
 //called when we are told we're unloading.
