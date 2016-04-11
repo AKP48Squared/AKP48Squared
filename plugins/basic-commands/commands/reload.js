@@ -4,7 +4,7 @@ function Reload() {
 
 Reload.prototype.respond = function () {
   GLOBAL.AKP48.reload();
-  return 'Reloading...';
+  return '';
 };
 
 module.exports = Reload;
