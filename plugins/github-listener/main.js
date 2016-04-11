@@ -153,12 +153,12 @@ GitHubListener.prototype.handle = function (branch, data) {
   var hot_files = ['app.js', 'lib/AKP48.js', 'lib/polyfill.js'];
 
   if (!shutdown) {
-    
+
     for (var commit in data.commits) {
       if (data.commits.hasOwnProperty(commit)) {
-        var c = data.commits[c];
-        for (var file in c.modified) {
-          if (c.modified.hasOwnProperty(file)) {
+        var com = data.commits[commit];
+        for (var file in com.modified) {
+          if (com.modified.hasOwnProperty(file)) {
             if(hot_files.indexOf(file) !== -1) {
               shutdown = true;
             } else if (file.endsWith('package.json')) {
