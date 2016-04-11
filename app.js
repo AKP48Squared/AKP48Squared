@@ -6,8 +6,6 @@ require('pmx').init({
 });
 
 require('./lib/polyfill'); //load polyfill
-var logger = require('./lib/Logger');
-logger.info('AKP48 is starting.');
 var AKP48 = require('./lib/AKP48');
 var config;
 
@@ -17,6 +15,9 @@ try {
   //no config, so set config to null.
   config = null;
 }
+
+var logger = require('./lib/Logger')(config.logger.level || 'info');
+logger.info('AKP48 is starting.');
 
 //logger goes in global scope.
 GLOBAL.logger = logger;
