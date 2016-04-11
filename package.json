@@ -3,7 +3,6 @@
   "version": "3.0.0",
   "description": "I'm rewriting AKP48 from the ground up.",
   "main": "app.js",
-  "asdf": "asdf",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
