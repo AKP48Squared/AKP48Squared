@@ -1,10 +1,9 @@
 function Version() {
   this.names = ['version', 'v'];
-  this.version = this.buildVersion();
 }
 
 Version.prototype.respond = function () {
-  return 'v'+this.version;
+  return 'v'+this.buildVersion();
 };
 
 Version.prototype.buildVersion = function () {
@@ -13,11 +12,11 @@ Version.prototype.buildVersion = function () {
   var str = '';
 
   if(GitPlugin._isRepo) {
-    var tag = GitPlugin.getTag();
-    var commit = GitPlugin.getCommit() || tag;
-    var branch = GitPlugin.getBranch();
+    var commit = GitPlugin.getCommit().substring(0,7);
+    var branch = GitPlugin.getBranch() || GitPlugin.getTag();
 
-    str = ` ${branch}@${commit}`;
+
+    str = `+${commit}-${branch}`;
   }
 
   return version + str;

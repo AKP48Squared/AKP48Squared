@@ -27,6 +27,8 @@ class GitHubListener extends BackgroundTaskPlugin {
       this._AKP48.saveConfig(this._config, 'github-listener');
     }
 
+    this._isRepo = (getRepoInfo._findRepo('.') !== null);
+
     if(this._config.enabled) {
       this._listener = new GitHubHook({
         path: this._config.path,
@@ -47,8 +49,6 @@ class GitHubListener extends BackgroundTaskPlugin {
       GLOBAL.logger.silly(`${this._pluginName}: Listening for repo ${this._config.repository}, branch ${this._config.branch}.`);
 
       this._listener.listen();
-
-      this._isRepo = (getRepoInfo._findRepo('.') !== null);
 
       var self = this;
       this._listener.on(`push:${this._config.repository}`, function (ref, data) {
