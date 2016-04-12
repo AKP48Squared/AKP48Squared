@@ -149,6 +149,7 @@ GitHubListener.prototype.handle = function (branch, data) {
   }
 
   var shutdown = changing_branch;
+  var npm = changing_branch;
   var hot_files = ['app.js', 'lib/AKP48.js', 'lib/polyfill.js'];
 
   if (!shutdown) {
@@ -160,6 +161,9 @@ GitHubListener.prototype.handle = function (branch, data) {
           if (com.modified.hasOwnProperty(file)) {
             if(hot_files.indexOf(com.modified[file]) !== -1) {
               shutdown = true;
+            }
+            if(com.modified[file].endsWith('package.json')) {
+              npm = true;
             }
           }
         }
@@ -212,10 +216,11 @@ GitHubListener.prototype.handle = function (branch, data) {
         }));
       }
 
-      Promise.all(proms).then(function(){
-        resolve(); //resolve promise after all npm installs are finished.
-      });
-
+      if(npm) {
+        Promise.all(proms).then(function(){
+          resolve(); //resolve promise after all npm installs are finished.
+        });
+      }
 
     }).then(function(){
       if (shutdown) {
