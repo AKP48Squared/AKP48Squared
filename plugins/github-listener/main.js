@@ -190,8 +190,11 @@ GitHubListener.prototype.handle = function (branch, data) {
     return;
   }
 
-  GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
-  shell.exec('npm install');
+  if(npm) {
+    GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
+    shell.exec('npm install');
+  }
+  
   var pluginPath = path.resolve(require('app-root-path').path, 'plugins/*/plugin.json');
   glob(pluginPath, function(err, files) {
     if(err) {GLOBAL.logger.error(`${this._pluginName}: Glob error: "${err}".`);return;}
@@ -211,6 +214,7 @@ GitHubListener.prototype.handle = function (branch, data) {
 
         proms.push(new Promise(function(resolve){ // jshint ignore:line
           if(npm) {
+            GLOBAL.logger.debug(`${this._pluginName}: Executing npm install for ${files[j]}.`);
             shell.exec('npm install', function(){
               resolve();
             });
