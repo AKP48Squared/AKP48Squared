@@ -7,6 +7,8 @@ Dice.prototype.respond = function (context) {
 
   var numRolls, numSides;
 
+  return 'Command temporarily disabled';
+
   if(args[0] === undefined) {
     numRolls = 1;
   } else {
