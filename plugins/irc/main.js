@@ -22,6 +22,7 @@ class IRC extends ServerConnectorPlugin {
       this._client.removeAllListeners('invite');
       this._client.removeAllListeners('kick');
       this._client.removeAllListeners('error');
+      this._client.removeAllListeners('action');
       this._connected = true;
     } else {
       this._client = new irc.Client(config.server, config.nick, {
@@ -37,6 +38,13 @@ class IRC extends ServerConnectorPlugin {
     this._client.on('message', function(nick, to, text, message) {
       if(to === config.nick) { to = nick; }
       self._AKP48.onMessage(text, self.createContextFromMessage(message, to));
+    });
+
+    this._client.on('action', function(nick, to, text, message) {
+      if(to === config.nick) { to = nick; }
+      var context = self.createContextFromMessage(message, to);
+      context.isEmote = true;
+      self._AKP48.onMessage(text, context);
     });
 
     this._client.on('registered', function() {
