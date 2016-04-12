@@ -1,7 +1,6 @@
 function Version() {
   this.names = ['version', 'v'];
   this.version = this.buildVersion();
-  this.GitPlugin = GLOBAL.AKP48.getPluginInstance('BackgroundTask', 'github-listener');
 }
 
 Version.prototype.respond = function () {
@@ -10,13 +9,15 @@ Version.prototype.respond = function () {
 
 Version.prototype.buildVersion = function () {
   var version = GLOBAL.AKP48.package.version;
+  var GitPlugin = GLOBAL.AKP48.getPluginInstance('BackgroundTask', 'github-listener');
+  var str = '';
 
-  if(this.GitPlugin._isRepo) {
-    var tag = this.GitPlugin.getTag();
-    var commit = this.GitPlugin.getCommit() || tag;
-    var branch = this.GitPlugin.getBranch();
+  if(GitPlugin._isRepo) {
+    var tag = GitPlugin.getTag();
+    var commit = GitPlugin.getCommit() || tag;
+    var branch = GitPlugin.getBranch();
 
-    var str = ` ${branch}@${commit}`;
+    str = ` ${branch}@${commit}`;
   }
 
   return version + str;
