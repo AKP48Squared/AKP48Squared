@@ -1,3 +1,10 @@
+require('pmx').init({
+  http: false, // HTTP routes logging (default: true)
+  custom_probes: true, // Auto expose JS Loop Latency and HTTP req/s as custom metrics
+  network: true, // Network monitoring at the application level
+  ports: true  // Shows which ports your app is listening on (default: false)
+});
+
 require('./lib/polyfill'); //load polyfill
 var AKP48 = require('./lib/AKP48');
 var config;
