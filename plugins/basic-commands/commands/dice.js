@@ -38,7 +38,7 @@ Dice.prototype.respond = function (context) {
   var outputString = '';
 
   for (var j = 0; j < rolls.length; j++) {
-    outputString += `${rolls[i]} · `;
+    outputString += `${rolls[j]} · `;
   }
 
   outputString = outputString.substring(0, outputString.length - 3);
