@@ -7,8 +7,6 @@ Dice.prototype.respond = function (context) {
 
   var numRolls, numSides;
 
-  return 'Command temporarily disabled';
-
   if(args[0] === undefined) {
     numRolls = 1;
   } else {
@@ -39,7 +37,7 @@ Dice.prototype.respond = function (context) {
 
   var outputString = '';
 
-  for (var j = 0; j < rolls.length; i++) {
+  for (var j = 0; j < rolls.length; j++) {
     outputString += `${rolls[i]} · `;
   }
 
