@@ -3,7 +3,7 @@ function Reload() {
 }
 
 Reload.prototype.respond = function (context) {
-  if(context.perms && context.perms['basic-commands'].reload) {
+  if(context.perms && context.perms.contains('basic-commands.reload') || true) {
     GLOBAL.AKP48.reload();
   }
   return '';
