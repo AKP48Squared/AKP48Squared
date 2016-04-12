@@ -6,9 +6,10 @@ function Roll() {
 }
 
 Roll.prototype.respond = function (context) {
-  var diceRegEx = /^(?: *(?:\d*[1-9]\d*|(?=d))(?:d\d*[1-9]\d*(?:x\d*[1-9]\d*)?)?)+ */gi;
+  var diceRegEx = /^^(?:roll(?= *[^+ ]))(?: *(?: |\+) *(?:\d*[1-9]\d*|(?=d))(?:d\d*[1-9]\d*(?:x\d*[1-9]\d*)?)?)+ *$/gi;
   var diceRollRegEx = /[ +](\d+|(?=d))(?:d(\d+)(?:x(\d+))?)?(?= *(\+| |$))/gi;
-  var msg = context.text;
+  //TODO: figure out how to remove 'roll' from the regex.
+  var msg = `roll ${context.text}`;
   var result, di;
   var dice = [];
 
