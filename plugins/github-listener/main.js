@@ -210,17 +210,19 @@ GitHubListener.prototype.handle = function (branch, data) {
         shell.cd(files[j]);
 
         proms.push(new Promise(function(resolve){ // jshint ignore:line
-          shell.exec('npm install', function(){
+          if(npm) {
+            shell.exec('npm install', function(){
+              resolve();
+            });
+          } else {
             resolve();
-          });
+          }
         }));
       }
 
-      if(npm) {
-        Promise.all(proms).then(function(){
-          resolve(); //resolve promise after all npm installs are finished.
-        });
-      }
+      Promise.all(proms).then(function(){
+        resolve(); //resolve promise after all npm installs are finished.
+      });
 
     }).then(function(){
       if (shutdown) {
