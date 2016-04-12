@@ -149,7 +149,6 @@ GitHubListener.prototype.handle = function (branch, data) {
   }
 
   var shutdown = changing_branch;
-  var npm = changing_branch;
   var hot_files = ['app.js', 'lib/AKP48.js', 'lib/polyfill.js'];
 
   if (!shutdown) {
@@ -161,8 +160,6 @@ GitHubListener.prototype.handle = function (branch, data) {
           if (com.modified.hasOwnProperty(file)) {
             if(hot_files.indexOf(com.modified[file]) !== -1) {
               shutdown = true;
-            } else if (file.endsWith('package.json') || file === 'package.json') {
-              npm = true;
             }
           }
         }
@@ -189,48 +186,45 @@ GitHubListener.prototype.handle = function (branch, data) {
     return;
   }
 
-  if (npm || shutdown) {
-    GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
-    shell.exec('npm install');
-    glob('plugins/*/package.json', function(err, files) {
-      if(err) {GLOBAL.logger.error(`${this._pluginName}: Glob error: "${err}".`);return;}
 
-      new Promise(function(resolve) {
-        //two separate loops because shell is doing something weird if I do it all as one loop.
-        //first loop resolves paths to full absolute paths.
-        for (var i = 0; i < files.length; i++) {
-          files[i] = path.dirname(path.resolve(files[i]));
-        }
+  GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
+  shell.exec('npm install');
+  glob('plugins/*/package.json', function(err, files) {
+    if(err) {GLOBAL.logger.error(`${this._pluginName}: Glob error: "${err}".`);return;}
 
-        var proms = [];
+    new Promise(function(resolve) {
+      //two separate loops because shell is doing something weird if I do it all as one loop.
+      //first loop resolves paths to full absolute paths.
+      for (var i = 0; i < files.length; i++) {
+        files[i] = path.dirname(path.resolve(files[i]));
+      }
 
-        //second loop CDs into each directory and runs npm install.
-        for (var j = 0; j < files.length; j++) {
-          shell.cd(files[j]);
+      var proms = [];
 
-          proms.push(new Promise(function(resolve){ // jshint ignore:line
-            shell.exec('npm install', function(){
-              resolve();
-            });
-          }));
-        }
+      //second loop CDs into each directory and runs npm install.
+      for (var j = 0; j < files.length; j++) {
+        shell.cd(files[j]);
 
-        Promise.all(proms).then(function(){
-          resolve(); //resolve promise after all npm installs are finished.
-        });
+        proms.push(new Promise(function(resolve){ // jshint ignore:line
+          shell.exec('npm install', function(){
+            resolve();
+          });
+        }));
+      }
 
-
-      }).then(function(){
-        if (shutdown) {
-          self._AKP48.shutdown(`I'm updating! :3`);
-        } else {
-          self._AKP48.reload();
-        }
+      Promise.all(proms).then(function(){
+        resolve(); //resolve promise after all npm installs are finished.
       });
+
+
+    }).then(function(){
+      if (shutdown) {
+        self._AKP48.shutdown(`I'm updating! :3`);
+      } else {
+        self._AKP48.reload();
+      }
     });
-  } else {
-    this._AKP48.reload();
-  }
+  });
 };
 
 GitHubListener.prototype.fetch = function () {
