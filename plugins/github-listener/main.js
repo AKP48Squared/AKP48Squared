@@ -167,6 +167,14 @@ GitHubListener.prototype.handle = function (branch, data) {
             }
           }
         }
+
+        for (var f in com.created) {
+          if (com.modified.hasOwnProperty(f)) {
+            if(com.modified[f].endsWith('package.json')) {
+              npm = true;
+            }
+          }
+        }
       }
     }
 
