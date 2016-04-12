@@ -188,7 +188,8 @@ GitHubListener.prototype.handle = function (branch, data) {
 
   GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
   shell.exec('npm install');
-  glob('plugins/*/package.json', function(err, files) {
+  var pluginPath = path.resolve(require('app-root-path').path, 'plugins/*/plugin.json');
+  glob(pluginPath, function(err, files) {
     if(err) {GLOBAL.logger.error(`${this._pluginName}: Glob error: "${err}".`);return;}
 
     new Promise(function(resolve) {
