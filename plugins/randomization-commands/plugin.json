@@ -1,0 +1,6 @@
+{
+  "name": "randomization-commands",
+  "type": "MessageHandler",
+  "description": "Randomization commands for AKP48.",
+  "main": "main.js"
+}
