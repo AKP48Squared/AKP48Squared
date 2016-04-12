@@ -186,7 +186,6 @@ GitHubListener.prototype.handle = function (branch, data) {
     return;
   }
 
-
   GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
   shell.exec('npm install');
   glob('plugins/*/package.json', function(err, files) {
