@@ -43,7 +43,7 @@ class IRC extends ServerConnectorPlugin {
     this._client.on('action', function(nick, to, text, message) {
       if(to === config.nick) { to = nick; }
       var context = self.createContextFromMessage(message, to);
-      context.isEmote = true;
+      context.isAction = true;
       self._AKP48.onMessage(text, context);
     });
 
