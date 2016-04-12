@@ -1,5 +1,5 @@
 function Issues() {
-  this.names = ['issues', 'ghissues'];
+  this.names = ['bugs', 'ghissues'];
 }
 
 Issues.prototype.respond = function () {
