@@ -4,7 +4,9 @@ function Reconnect() {
 
 Reconnect.prototype.respond = function (context) {
   context.instance.disconnect(context.text || 'brb <3');
-  context.instance.connect();
+  setTimeout(function(){
+    context.instance.connect();
+  }, 1000);
   return;
 };
 
