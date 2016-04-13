@@ -71,6 +71,7 @@ class Skype extends ServerConnectorPlugin {
     }
     if(this._connected) {
       GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Using previous server.`);
+      this._connected = false;
     } else {
       this._server.listen(this._port);
       GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Server listening for incoming requests on port ${this._port}.`);

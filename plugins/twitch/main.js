@@ -72,6 +72,7 @@ class Twitch extends ServerConnectorPlugin {
     }
     if(this._connected) {
       GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Using previous connection.`);
+      this._connected = false;
     } else {
       this._client.connect();
     }

@@ -77,6 +77,7 @@ class Discord extends ServerConnectorPlugin {
     }
     if(this._connected) {
       GLOBAL.logger.silly(`${this._pluginName}|${this._id}: Reusing previous connection.`);
+      this._connected = false;
       return;
     } else {
       GLOBAL.logger.silly(`${this._pluginName}|${this._id}: Connecting...`);
