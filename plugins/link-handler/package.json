@@ -1,0 +1,11 @@
+{
+  "name": "akp48-plugin-link-handler",
+  "version": "1.0.0",
+  "description": "Provides information about certain links when AKP48 sees them in a message.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Austin Peterson <austin@akpwebdesign.com>",
+  "license": "MIT"
+}
