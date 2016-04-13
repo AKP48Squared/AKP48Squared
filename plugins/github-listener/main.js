@@ -162,7 +162,7 @@ GitHubListener.prototype.handle = function (branch, data) {
             if(hot_files.indexOf(com.modified[file]) !== -1) {
               shutdown = true;
             }
-            if(com.modified[file].endsWith('package.json')) {
+            if(com.modified[file].includes('package.json')) {
               npm = true;
             }
           }
@@ -170,7 +170,7 @@ GitHubListener.prototype.handle = function (branch, data) {
 
         for (var f in com.created) {
           if (com.modified.hasOwnProperty(f)) {
-            if(com.modified[f].endsWith('package.json')) {
+            if(com.modified[f].includes('package.json')) {
               npm = true;
             }
           }
@@ -198,7 +198,7 @@ GitHubListener.prototype.handle = function (branch, data) {
     return;
   }
 
-  if(npm) {
+  if(npm || shutdown) {
     GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
     shell.exec('npm install');
   }
@@ -221,7 +221,7 @@ GitHubListener.prototype.handle = function (branch, data) {
         shell.cd(files[j]);
 
         proms.push(new Promise(function(resolve){ // jshint ignore:line
-          if(npm) {
+          if(npm || shutdown) {
             GLOBAL.logger.debug(`${self._pluginName}: Executing npm install for ${files[j]}.`);
             shell.exec('npm install', function(){
               resolve();
