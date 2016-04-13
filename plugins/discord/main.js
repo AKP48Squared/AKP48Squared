@@ -29,14 +29,18 @@ class Discord extends ServerConnectorPlugin {
 
     this._client.Dispatcher.on('GATEWAY_READY', () => {
       GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Connected as ${this._client.User.username}.`);
-      //set game status
-      this._client.User.setStatus('idle', {name: 'with code'});
+      //set game status if configured.
+      if(this._config.game) {
+        this._client.User.setStatus('idle', {name: `${this._config.game}.`});
+      }
     });
 
     this._client.Dispatcher.on('GATEWAY_RESUMED', () => {
       GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Reconnected as ${this._client.User.username}.`);
-      //set game status
-      this._client.User.setStatus('idle', {name: 'with code'});
+      //set game status if configured.
+      if(this._config.game) {
+        this._client.User.setStatus('idle', {name: `${this._config.game}.`});
+      }
     });
 
     this._client.Dispatcher.on('MESSAGE_CREATE', e => {
