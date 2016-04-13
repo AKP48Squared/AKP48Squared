@@ -19,7 +19,9 @@ class Discord extends ServerConnectorPlugin {
     if(persistentObjects){
       this._client = persistentObjects.client;
       this._client.Dispatcher.removeAllListeners('GATEWAY_READY');
+      this._client.Dispatcher.removeAllListeners('GATEWAY_RESUMED');
       this._client.Dispatcher.removeAllListeners('MESSAGE_CREATE');
+      this._client.Dispatcher.removeAllListeners('DISCONNECTED');
       this._connected = true;
     } else {
       this._client = new Discordie();
@@ -27,10 +29,22 @@ class Discord extends ServerConnectorPlugin {
 
     this._client.Dispatcher.on('GATEWAY_READY', () => {
       GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Connected as ${this._client.User.username}.`);
+      //set game status
+      this._client.User.setStatus('idle', {name: 'with code'});
+    });
+
+    this._client.Dispatcher.on('GATEWAY_RESUMED', () => {
+      GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Reconnected as ${this._client.User.username}.`);
+      //set game status
+      this._client.User.setStatus('idle', {name: 'with code'});
     });
 
     this._client.Dispatcher.on('MESSAGE_CREATE', e => {
       self._AKP48.onMessage(e.message.content, self.createContextFromMessage(e));
+    });
+
+    this._client.Dispatcher.on('DISCONNECTED', (err) => {
+      GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Disconnected from server. Error message: "${err.message}."`);
     });
 
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
