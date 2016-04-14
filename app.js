@@ -8,15 +8,17 @@ require('pmx').init({
 require('./lib/polyfill'); //load polyfill
 var AKP48 = require('./lib/AKP48');
 var config;
+var logger;
 
 try {
   config = require('./config.json');
+  logger = require('./lib/Logger')(config.logger.level || 'info');
 } catch(e) {
   //no config, so set config to null.
   config = null;
+  logger = require('./lib/Logger')('info');
 }
 
-var logger = require('./lib/Logger')(config.logger.level || 'info');
 logger.info('AKP48 is starting.');
 
 //logger goes in global scope.
