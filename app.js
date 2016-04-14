@@ -12,10 +12,15 @@ var logger;
 
 try {
   config = require('./config.json');
-  logger = require('./lib/Logger')(config.logger.level || 'info');
 } catch(e) {
+  console.log("No config file found.");
   //no config, so set config to null.
   config = null;
+}
+
+try {
+  logger = require('./lib/Logger')(config.logger.level || 'info');
+} catch(e) {
   logger = require('./lib/Logger')('info');
 }
 
