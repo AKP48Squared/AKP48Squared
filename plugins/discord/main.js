@@ -23,6 +23,10 @@ class Discord extends ServerConnectorPlugin {
       this._client.Dispatcher.removeAllListeners('MESSAGE_CREATE');
       this._client.Dispatcher.removeAllListeners('DISCONNECTED');
       this._connected = true;
+      //if client state is DISCONNECTED for some reason, we should try to reconnect now.
+      if(this._client.state === 'DISCONNECTED') {
+        this.connect();
+      }
     } else {
       this._client = new Discordie();
     }
@@ -49,6 +53,7 @@ class Discord extends ServerConnectorPlugin {
 
     this._client.Dispatcher.on('DISCONNECTED', (err) => {
       GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Disconnected from server. Error message: "${err.message}."`);
+      self.connect(); // if we get disconnected, try to reconnect. This event won't fire when we purposely disconnect, so this is fine.
     });
 
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
