@@ -25,7 +25,7 @@ class Discord extends ServerConnectorPlugin {
       this._connected = true;
       GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Current state: ${this._client.state}.`);
       //if client state is DISCONNECTED for some reason, we should try to reconnect now.
-      if(this._client.state === 'DISCONNECTED') {
+      if(this._client.state === 'DISCONNECTED' || !this._client.connected) {
         this.connect();
       }
     } else {
