@@ -1,14 +1,15 @@
 'use strict';
 const ConvertBase = require('./ConvertBase');
+const ConvertTemp = require('./ConvertTemp');
 const MessageHandlerPlugin = require('../../lib/MessageHandlerPlugin');
 
-class BaseConversion extends MessageHandlerPlugin {
+class Conversion extends MessageHandlerPlugin {
   constructor(AKP48) {
-    super('BaseConversion', AKP48);
+    super('Conversion', AKP48);
   }
 }
 
-BaseConversion.prototype.handleCommand = function (message, context) {
+Conversion.prototype.handleCommand = function (message, context) {
   GLOBAL.logger.silly(`${this._pluginName}: Received command.`);
 
   // prepare text.
@@ -27,6 +28,15 @@ BaseConversion.prototype.handleCommand = function (message, context) {
 
     this._AKP48.sendMessage(context.instanceId, context.to, responses.join(', '), context);
   }
+
+  if(typeof ConvertTemp[command] === 'function') {
+    GLOBAL.logger.silly(`${this._pluginName}: Responding to ${command} command.`);
+    var responses = [];
+    for (var i = 0; i < text.length; i++) {
+      responses.push(`${ConvertTemp[command](text[i])}`);
+    }
+    this._AKP48.sendMessage(context.instanceId, context.to, responses.join(', '), context);
+  }
 };
 
-module.exports = BaseConversion;
+module.exports = Conversion;
