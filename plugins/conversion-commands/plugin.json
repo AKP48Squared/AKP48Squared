@@ -1,0 +1,6 @@
+{
+  "name": "conversion-commands",
+  "type": "MessageHandler",
+  "description": "Allows AKP48 to convert things.",
+  "main": "main.js"
+}

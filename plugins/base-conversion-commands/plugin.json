@@ -1,6 +1,0 @@
-{
-  "name": "base-conversion-commands",
-  "type": "MessageHandler",
-  "description": "Allows AKP48 to convert number bases.",
-  "main": "main.js"
-}

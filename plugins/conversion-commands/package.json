@@ -1,7 +1,7 @@
 {
-  "name": "akp48-plugin-base-conversion-commands",
+  "name": "akp48-plugin-conversion-commands",
   "version": "1.0.0",
-  "description": "Allows AKP48 to convert number bases.",
+  "description": "Allows AKP48 to convert things.",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
