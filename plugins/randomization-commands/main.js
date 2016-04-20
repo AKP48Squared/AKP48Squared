@@ -16,12 +16,12 @@ class RandomizationCommands extends BasicCommands {
     });
   }
 
-  handleCommand(message, context) {
+  handleCommand(message, context, res) {
     GLOBAL.logger.silly(`${this._pluginName}: Received command.`);
 
     //run the handleCommand logic from BasicCommands, which should use our defined commands instead.
     GLOBAL.logger.silly(`${this._pluginName}: Attempting to handle command using BasicCommands logic.`);
-    super.handleCommand(message, context);
+    super.handleCommand(message, context, res);
   }
 }
 

@@ -33,7 +33,7 @@ class Twitch extends ServerConnectorPlugin {
     this._client.on('chat', function(to, user, text, sentFromSelf) {
       if(to === self._client.getUsername()) { to = user.username; }
       if(!sentFromSelf) {
-        self._AKP48.onMessage(text, self.createContext(to, user, text));
+        self._AKP48.onMessage(text, self.createContexts(to, user, text));
       }
     });
 
@@ -87,24 +87,37 @@ class Twitch extends ServerConnectorPlugin {
   }
 }
 
-Twitch.prototype.createContext = function (to, user, text) {
-  var delimiterLength = this.isTextACommand(text, to);
-  if(delimiterLength) {
-    text = text.slice(delimiterLength).trim();
+Twitch.prototype.createContexts = function (to, user, text) {
+  var textArray = text.split('|');
+  var ctxs = [];
+
+  for (var i = 0; i < textArray.length; i++) {
+    textArray[i] = textArray[i].trim();
+    var delimiterLength = this.isTextACommand(textArray[i], to);
+    if(delimiterLength) {
+      textArray[i] = textArray[i].slice(delimiterLength).trim();
+    }
+
+    var ctx = {
+      rawMessage: text,
+      nick: user['display-name'],
+      user: user.username,
+      rawText: text,
+      text: textArray[i].trim(),
+      to: to,
+      myNick: this._client.getUsername(),
+      instanceId: this._id,
+      instanceType: 'twitch',
+      instance: this,
+      isCmd: delimiterLength ? true : false
+    };
+
+    ctxs.push(ctx);
   }
 
-  return {
-    rawMessage: text,
-    nick: user['display-name'],
-    user: user.username,
-    text: text,
-    to: to,
-    myNick: this._client.getUsername(),
-    instanceId: this._id,
-    instanceType: 'twitch',
-    instance: this,
-    isCmd: (delimiterLength ? true : false)
-  };
+  ctxs[ctxs.length-1].last = true;
+
+  return ctxs;
 };
 
 Twitch.prototype.getChannelConfig = function (channel) {

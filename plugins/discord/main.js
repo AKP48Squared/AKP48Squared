@@ -49,7 +49,7 @@ class Discord extends ServerConnectorPlugin {
     });
 
     this._client.Dispatcher.on('MESSAGE_CREATE', e => {
-      self._AKP48.onMessage(e.message.content, self.createContextFromMessage(e));
+      self._AKP48.onMessage(e.message.content, self.createContextsFromMessage(e));
     });
 
     this._client.Dispatcher.on('DISCONNECTED', (err) => {
@@ -101,31 +101,43 @@ class Discord extends ServerConnectorPlugin {
   }
 }
 
-Discord.prototype.createContextFromMessage = function (msg) {
+Discord.prototype.createContextsFromMessage = function (msg) {
   //check to be sure we didn't send the message.
   if(msg.socket.userId === msg.message.author.id) {
     return;
   }
 
   var text = msg.message.content;
+  var textArray = text.split('|');
+  var ctxs = [];
 
-  var delimiterLength = this.isTextACommand(text, msg.message.channel_id);
-  if(delimiterLength) {
-    text = text.slice(delimiterLength).trim();
+  for (var i = 0; i < textArray.length; i++) {
+    textArray[i] = textArray[i].trim();
+    var delimiterLength = this.isTextACommand(textArray[i], msg.message.channel_id);
+    if(delimiterLength) {
+      textArray[i] = textArray[i].slice(delimiterLength).trim();
+    }
+
+    var ctx = {
+      rawMessage: msg.message,
+      nick: msg.message.author.username,
+      user: msg.message.author.id,
+      rawText: text,
+      text: textArray[i].trim(),
+      to: msg.message.channel_id,
+      myNick: this._client.User.username,
+      instanceId: this._id,
+      instanceType: 'discord',
+      instance: this,
+      isCmd: delimiterLength ? true : false
+    };
+
+    ctxs.push(ctx);
   }
 
-  return {
-    rawMessage: msg.message,
-    nick: msg.message.author.username,
-    user: msg.message.author.id,
-    text: text,
-    to: msg.message.channel_id,
-    myNick: this._client.User.username,
-    instanceId: this._id,
-    instanceType: 'discord',
-    instance: this,
-    isCmd: (delimiterLength ? true : false)
-  };
+  ctxs[ctxs.length-1].last = true;
+
+  return ctxs;
 };
 
 Discord.prototype.getChannelConfig = function (channel) {

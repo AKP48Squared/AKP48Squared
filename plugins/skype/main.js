@@ -39,11 +39,11 @@ class Skype extends ServerConnectorPlugin {
     });
 
     this._botService.on('personalMessage', (bot, data) => {
-      self._AKP48.onMessage(data.content, self.createContextFromMessage(bot, data));
+      self._AKP48.onMessage(data.content, self.createContextsFromMessage(bot, data));
     });
 
     this._botService.on('groupMessage', (bot, data) => {
-      self._AKP48.onMessage(data.content, self.createContextFromMessage(bot, data));
+      self._AKP48.onMessage(data.content, self.createContextsFromMessage(bot, data));
     });
 
     if(persistentObjects) {
@@ -87,25 +87,38 @@ class Skype extends ServerConnectorPlugin {
   }
 }
 
-Skype.prototype.createContextFromMessage = function (bot, data) {
-  var delimiterLength = this.isTextACommand(data.content);
-  if(delimiterLength) {
-    data.content = data.content.slice(delimiterLength).trim();
+Skype.prototype.createContextsFromMessage = function (bot, data) {
+  var textArray = data.content.split('|');
+  var ctxs = [];
+
+  for (var i = 0; i < textArray.length; i++) {
+    textArray[i] = textArray[i].trim();
+    var delimiterLength = this.isTextACommand(textArray[i]);
+    if(delimiterLength) {
+      textArray[i] = textArray[i].slice(delimiterLength).trim();
+    }
+
+    var ctx = {
+      rawMessage: data,
+      nick: data.from,
+      user: data.from,
+      rawText: data.content,
+      text: textArray[i].trim(),
+      to: data.to,
+      myNick: '28:'+this._config.appId,
+      bot: bot,
+      instanceId: this._id,
+      instanceType: 'skype',
+      instance: this,
+      isCmd: delimiterLength ? true : false
+    };
+
+    ctxs.push(ctx);
   }
 
-  return {
-    rawMessage: data,
-    nick: data.from,
-    user: data.from,
-    text: data.content,
-    to: data.to,
-    myNick: '28:'+this._config.appId,
-    bot: bot,
-    instanceId: this._id,
-    instanceType: 'skype',
-    instance: this,
-    isCmd: (delimiterLength ? true : false)
-  };
+  ctxs[ctxs.length-1].last = true;
+
+  return ctxs;
 };
 
 Skype.prototype.isTextACommand = function (text) {

@@ -8,8 +8,9 @@ class LinkHandler extends MessageHandlerPlugin {
   }
 }
 
-LinkHandler.prototype.handleMessage = function (message, context) {
+LinkHandler.prototype.handleMessage = function (message, context, res) {
   GLOBAL.logger.silly(`${this._pluginName}: Received message.`);
+  res(false);
 
   //check message to see if it matches a weblink.
   if(regexes.weburl.test(message)) {

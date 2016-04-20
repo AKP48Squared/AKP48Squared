@@ -1,6 +1,7 @@
 'use strict';
 const ServerConnectorPlugin = require('../../lib/ServerConnectorPlugin');
 const irc = require('irc');
+const Promise = require('bluebird'); // jshint ignore:line
 
 class IRC extends ServerConnectorPlugin {
   constructor(config, id, AKP48, persistentObjects) {
@@ -37,12 +38,12 @@ class IRC extends ServerConnectorPlugin {
 
     this._client.on('message', function(nick, to, text, message) {
       if(to === config.nick) { to = nick; }
-      self._AKP48.onMessage(text, self.createContextFromMessage(message, to));
+      self._AKP48.onMessage(text, self.createContextsFromMessage(message, to));
     });
 
     this._client.on('action', function(nick, to, text, message) {
       if(to === config.nick) { to = nick; }
-      var context = self.createContextFromMessage(message, to);
+      var context = self.createContextsFromMessage(message, to);
       context.isAction = true;
       self._AKP48.onMessage(text, context);
     });
@@ -122,24 +123,37 @@ class IRC extends ServerConnectorPlugin {
   }
 }
 
-IRC.prototype.createContextFromMessage = function (message, to) {
-  var delimiterLength = this.isTextACommand(message.args[1], to);
-  if(delimiterLength) {
-    message.args[1] = message.args[1].slice(delimiterLength).trim();
+IRC.prototype.createContextsFromMessage = function (message, to) {
+  var textArray = message.args[1].split('|');
+  var ctxs = [];
+
+  for (var i = 0; i < textArray.length; i++) {
+    textArray[i] = textArray[i].trim();
+    var delimiterLength = this.isTextACommand(textArray[i], to);
+    if(delimiterLength) {
+      textArray[i] = textArray[i].slice(delimiterLength).trim();
+    }
+
+    var ctx = {
+      rawMessage: message,
+      nick: message.nick,
+      user: message.prefix,
+      rawText: message.args[1],
+      text: textArray[i].trim(),
+      to: to,
+      myNick: this._client.nick,
+      instanceId: this._id,
+      instanceType: 'irc',
+      instance: this,
+      isCmd: delimiterLength ? true : false
+    };
+
+    ctxs.push(ctx);
   }
 
-  return {
-    rawMessage: message,
-    nick: message.nick,
-    user: message.prefix,
-    text: message.args[1],
-    to: to,
-    myNick: this._client.nick,
-    instanceId: this._id,
-    instanceType: 'irc',
-    instance: this,
-    isCmd: (delimiterLength ? true : false)
-  };
+  ctxs[ctxs.length-1].last = true;
+
+  return ctxs;
 };
 
 IRC.prototype.getChannelConfig = function (channel) {

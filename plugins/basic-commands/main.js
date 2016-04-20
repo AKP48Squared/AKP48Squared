@@ -14,7 +14,7 @@ class BasicCommands extends MessageHandlerPlugin {
   }
 }
 
-BasicCommands.prototype.handleCommand = function (message, context) {
+BasicCommands.prototype.handleCommand = function (message, context, resolve) {
   GLOBAL.logger.silly(`${this._pluginName}: Received command.`);
 
   // prepare text.
@@ -31,7 +31,7 @@ BasicCommands.prototype.handleCommand = function (message, context) {
       GLOBAL.logger.silly(`${this._pluginName}: Checking ${cmd} command for ${command}.`);
       if(this.commands[cmd].names.includes(command.toLowerCase())) {
         GLOBAL.logger.silly(`${this._pluginName}: Found command for ${command}.`);
-        this._AKP48.sendMessage(context.instanceId, context.to, this.commands[cmd].respond(context), context);
+        resolve(this.commands[cmd].respond(context));
       }
     }
   }

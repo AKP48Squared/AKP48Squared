@@ -6,6 +6,7 @@ function Rainbow() {
 
 Rainbow.prototype.respond = function (context) {
   context.noPrefix = true;
+  context.last = true; //forces rainbow output to take over response.
   if(context.text.length) {
     return c.rainbow(context.text);
   }

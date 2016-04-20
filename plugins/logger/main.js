@@ -7,10 +7,15 @@ class Logger extends MessageHandlerPlugin {
     super('Logger', AKP48);
 
     this._AKP48.on('sendMsg', this.handleSentMessage);
+    this._AKP48.on('fullMsg', this.handleFullMessage);
   }
 }
 
-Logger.prototype.handleMessage = function (message, context) {
+Logger.prototype.handleMessage = function (message, context, res) {
+  res(false);
+};
+
+Logger.prototype.handleFullMessage = function (message, context) {
   var out = `<=== ${context.instanceId}:${context.to} | ${context.nick} | ${c.stripColorsAndStyle(message)}`;
   GLOBAL.logger.debug(out);
 };

@@ -5,7 +5,7 @@ function Daft() {
 Daft.prototype.respond = function (context) {
   var noun = '';
   if(context.text.length) {
-    noun = `${context.text}: `;
+    noun = `${context.text.trim()}: `;
     context.noPrefix = true;
   }
 

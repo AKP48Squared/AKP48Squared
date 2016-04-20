@@ -10,7 +10,7 @@ class Conversion extends MessageHandlerPlugin {
   }
 }
 
-Conversion.prototype.handleCommand = function (message, context) {
+Conversion.prototype.handleCommand = function (message, context, res) {
   GLOBAL.logger.silly(`${this._pluginName}: Received command.`);
 
   // prepare text.
@@ -35,7 +35,7 @@ Conversion.prototype.handleCommand = function (message, context) {
     for (var i = 0; i < text.length; i++) {
       responses.push(`${ConvertTemp[command](text[i])}`);
     }
-    this._AKP48.sendMessage(context.instanceId, context.to, responses.join(', '), context);
+    res(responses.join(', '));
   }
 
   //all-in-one solution time.
@@ -55,7 +55,7 @@ Conversion.prototype.handleCommand = function (message, context) {
       responses.push(`Error! ${e.message}.`);
     }
 
-    this._AKP48.sendMessage(context.instanceId, context.to, responses.join(', '), context);
+    res(responses.join(', '));
   }
 };
 
