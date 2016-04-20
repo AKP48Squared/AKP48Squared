@@ -13,7 +13,7 @@ var logger;
 try {
   config = require('./config.json');
 } catch(e) {
-  console.log("No config file found.");
+  console.log('No config file found.');
   //no config, so set config to null.
   config = null;
 }
