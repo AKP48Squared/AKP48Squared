@@ -129,7 +129,7 @@ GitHubListener.prototype.handle = function (branch, data) {
 
   GLOBAL.logger.debug(`${this._pluginName}: Sending alert.`);
 
-  this._AKP48.sendMessage(null, null, msg, {isAlert: true});
+  this._AKP48.sendMessage(msg, {isAlert: true});
 
 
   if (!shell.which('git') || !this._isRepo) {
