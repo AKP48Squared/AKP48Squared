@@ -128,13 +128,6 @@ IRC.prototype.createContextsFromMessage = function (message, to) {
   var ctxs = [];
   var perms = this.getPermissions(`${message.user}@${message.host}`, message.nick, to);
 
-  //if user is banned, immediately drop request.
-  if(perms.includes('AKP48.banned')) {
-    //still emit fullMsg event though, for consumers that want it.
-    this._AKP48.emit('fullMsg', message.args[1], contexts[0]);
-    return;
-  }
-
   for (var i = 0; i < textArray.length; i++) {
     textArray[i] = textArray[i].trim();
     var delimiterLength = this.isTextACommand(textArray[i], to);
