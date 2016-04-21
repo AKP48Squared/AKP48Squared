@@ -4,6 +4,7 @@ const MessageHandlerPlugin = require('../../lib/MessageHandlerPlugin');
 class BasicCommands extends MessageHandlerPlugin {
   constructor(AKP48) {
     super('BasicCommands', AKP48);
+    this._data = require('./plugin.json');
     var self = this;
     this.commands = {};
     require('./commands').then(function(res){
@@ -40,18 +41,16 @@ BasicCommands.prototype.handleCommand = function (message, context, resolve) {
         //set name to first alias of command, for permissions check purposes.
         var name = this.commands[cmd].names[0];
 
-        var data = require('./plugin.json');
-
         //check permissions. if command requires permissions
-        if(data.commands[name] && data.commands[name].perms && data.commands[name].perms.length) {
+        if(this._data.commands[name] && this._data.commands[name].perms && this._data.commands[name].perms.length) {
           //and we don't have any at all, simply log and do nothing else
           if(!context.permissions) {
             GLOBAL.logger.silly(`${this._pluginName}: Command ${command} requires permissions and none were found.`);
           } else {
             //but if we have some permissions, loop through command perms and see if we have any of them.
             var canRun = false;
-            for (var i = 0; i < data.commands[name].perms.length; i++) {
-              if(context.permissions.includes(data.commands[name].perms[i])) {
+            for (var i = 0; i < this._data.commands[name].perms.length; i++) {
+              if(context.permissions.includes(this._data.commands[name].perms[i])) {
                 canRun = true;
                 break;
               }

@@ -5,6 +5,7 @@ const BasicCommands = require('../basic-commands/main.js');
 class IRCCommands extends BasicCommands {
   constructor(AKP48) {
     super(AKP48);
+    this._data = require('./plugin.json');
     //manually override pluginName, since we're extending another plugin.
     this._pluginName = 'IRCCommands';
     var self = this;
