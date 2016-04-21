@@ -13,6 +13,8 @@ IRCChannel.prototype.respond = function (context) {
     }
   }
   
+  GLOBAL.logger.silly('IRCChannel: ${context.command} ${chans.length}');
+  
   switch(context.command) {
     default:
     case "chan":
@@ -30,8 +32,8 @@ IRCChannel.prototype.respond = function (context) {
             IRC._config.channels.push(c);
           }
           var joinMsg = `Hello, everyone! I'm AKP48! I respond to commands and generally try to be helpful. For more information, say ".help"!`;
-          IRC._client.say(channel, joinMsg);
-          IRC._AKP48.sentMessage(channel, joinMsg, {myNick: IRC._client.nick, instanceId: IRC._id});
+          IRC._client.say(c, joinMsg);
+          IRC._AKP48.sentMessage(c, joinMsg, {myNick: IRC._client.nick, instanceId: IRC._id});
           IRC._AKP48.saveConfig(IRC._config, IRC._id, true);
         });
       });
