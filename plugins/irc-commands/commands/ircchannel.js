@@ -5,23 +5,23 @@ function IRCChannel() {
 IRCChannel.prototype.respond = function (context) {
   var IRC = context.instance;
   var chans = [];
-  
+
   // verify each chan is actually a channel
-  for (var chan in context.text.split(" ")) {
+  for (var chan in context.text.split(' ')) {
     if (chan.match(/([#&][^\x07\x2C\s]{0,200})/)) {
       chans.push(chan);
     }
   }
-  
+
   GLOBAL.logger.silly(`IRCChannel: ${context.command} ${chans.length}`);
-  
+
   switch(context.command) {
     default:
-    case "chan":
+    case 'chan':
       // Usage, for now. Later perhaps allow +/-channel
-      return "(join|part) channel [channel...]";
-    case "join":
-    case "+":
+      return '(join|part) channel [channel...]';
+    case 'join':
+    case '+':
       // Joining
       chans.forEach(function (c) {
         if(IRC._config.channels.includes(c)) { // Don't join channels we're already part of
@@ -31,15 +31,15 @@ IRCChannel.prototype.respond = function (context) {
           if(!IRC._config.channels.includes(c)) {
             IRC._config.channels.push(c);
           }
-          var joinMsg = `Hello, everyone! I'm AKP48! I respond to commands and generally try to be helpful. For more information, say ".help"!`;
+          var joinMsg = `Hello, everyone! I'm AKP48! I respond to commands and generally try to be helpful. For more information, say '.help'!`;
           IRC._client.say(c, joinMsg);
           IRC._AKP48.sentMessage(c, joinMsg, {myNick: IRC._client.nick, instanceId: IRC._id});
           IRC._AKP48.saveConfig(IRC._config, IRC._id, true);
         });
       });
       break;
-    case "part":
-    case "-":
+    case 'part':
+    case '-':
       // Leaving
       chans.forEach(function (c) {
         if(!IRC._config.channels.includes(c)) { // Don't leave channels we're not part of
