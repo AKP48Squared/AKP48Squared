@@ -3,9 +3,7 @@ function Shutdown() {
 }
 
 Shutdown.prototype.respond = function (context) {
-  if(context.perms && context.perms.contains('basic-commands.shutdown') || true) {
-    GLOBAL.AKP48.shutdown(context.text);
-  }
+  GLOBAL.AKP48.shutdown(context.text);
   return '';
 };
 
