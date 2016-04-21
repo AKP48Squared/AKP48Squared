@@ -23,7 +23,7 @@ IRCChannel.prototype.respond = function (context) {
       // Joining
       chans.forEach(function (c) {
         if(IRC._config.channels.includes(c)) { // Don't join channels we're already part of
-          continue;
+          return;
         }
         IRC._client.join(c, function() {
           if(!IRC._config.channels.includes(c)) {
