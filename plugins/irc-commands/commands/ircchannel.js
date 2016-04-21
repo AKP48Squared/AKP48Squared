@@ -13,7 +13,7 @@ IRCChannel.prototype.respond = function (context) {
     }
   }
   
-  GLOBAL.logger.silly('IRCChannel: ${context.command} ${chans.length}');
+  GLOBAL.logger.silly(`IRCChannel: ${context.command} ${chans.length}`);
   
   switch(context.command) {
     default:
