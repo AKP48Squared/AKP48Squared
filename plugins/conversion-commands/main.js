@@ -27,7 +27,7 @@ Conversion.prototype.handleCommand = function (message, context, res) {
       responses.push(`${text[i]} => ${ConvertBase[command](text[i])}`);
     }
 
-    this._AKP48.sendMessage(context.instanceId, context.to, responses.join(', '), context);
+    res(responses.join(', '));
   }
 
   if(typeof ConvertTemp[command] === 'function') {
