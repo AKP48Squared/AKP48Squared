@@ -191,8 +191,20 @@ IRC.prototype.getPermissions = function (prefix, nick, channel) {
 
   if(users && users[nick]) {
     switch(users[nick]) {
+      case '~':
+        outputPerms.push('irc.channel.owner');
+        break;
+      case '&':
+        outputPerms.push('irc.channel.protected');
+        break;
       case '@':
         outputPerms.push('irc.channel.op');
+        break;
+      case '%':
+        outputPerms.push('irc.channel.halfop');
+        break;
+      case '+':
+        outputPerms.push('irc.channel.voice');
         break;
       default:
         break;
