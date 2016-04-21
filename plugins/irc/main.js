@@ -126,6 +126,14 @@ class IRC extends ServerConnectorPlugin {
 IRC.prototype.createContextsFromMessage = function (message, to) {
   var textArray = message.args[1].split(/[^\\]\|/);
   var ctxs = [];
+  var perms = this.getPermissions(`${message.user}@${message.host}`, message.nick, to);
+
+  //if user is banned, immediately drop request.
+  if(perms.includes('AKP48.banned')) {
+    //still emit fullMsg event though, for consumers that want it.
+    this._AKP48.emit('fullMsg', message.args[1], contexts[0]);
+    return;
+  }
 
   for (var i = 0; i < textArray.length; i++) {
     textArray[i] = textArray[i].trim();
@@ -133,8 +141,6 @@ IRC.prototype.createContextsFromMessage = function (message, to) {
     if(delimiterLength) {
       textArray[i] = textArray[i].slice(delimiterLength).trim();
     }
-
-    var perms = this.getPermissions(`${message.user}@${message.host}`, message.nick, to);
 
     var ctx = {
       rawMessage: message,
@@ -150,6 +156,14 @@ IRC.prototype.createContextsFromMessage = function (message, to) {
       instance: this,
       isCmd: delimiterLength ? true : false
     };
+
+    // if user is banned, drop request after first context is created.
+    if(perms.includes('AKP48.banned')) {
+      // emit fullMsg event though, for consumers that want it.
+      // (that's why we wait until after the context is created)
+      this._AKP48.emit('fullMsg', message.args[1], ctx);
+      return;
+    }
 
     ctxs.push(ctx);
   }
