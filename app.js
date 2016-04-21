@@ -23,4 +23,4 @@ logger.info('AKP48 is starting.');
 GLOBAL.logger = logger;
 
 //load the bot.
-GLOBAL.AKP48 = new AKP48(config);
+GLOBAL.AKP48 = new AKP48(config, process.ENV.AKP48Restart);  
