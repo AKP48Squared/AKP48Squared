@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AKPWebDesign/AKP48-The-Second.git"
+    "url": "git+https://github.com/AKPWebDesign/AKP48Squared.git"
   },
   "author": "Austin Peterson <austin@akpwebdesign.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AKPWebDesign/AKP48-The-Second/issues"
+    "url": "https://github.com/AKPWebDesign/AKP48Squared/issues"
   },
-  "homepage": "https://github.com/AKPWebDesign/AKP48-The-Second#readme",
+  "homepage": "https://github.com/AKPWebDesign/AKP48Squared#readme",
   "dependencies": {
     "app-root-path": "^1.0.0",
     "bluebird": "^3.3.4",
@@ -24,7 +24,6 @@
     "irc-colors": "^1.2.1",
     "jsonfile": "^2.2.3",
     "node-uuid": "^1.4.7",
-    "pmx": "^0.6.1",
     "shelljs": "^0.6.0",
     "winston": "^2.2.0"
   }
