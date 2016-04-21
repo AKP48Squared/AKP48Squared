@@ -150,7 +150,7 @@ GitHubListener.prototype.handle = function (branch, data) {
 
   var shutdown = changing_branch;
   var npm = changing_branch;
-  var hot_files = ['app.js', 'lib/AKP48.js', 'lib/polyfill.js'];
+  var hot_files = ['app.js'];
 
   if (!shutdown) {
 
