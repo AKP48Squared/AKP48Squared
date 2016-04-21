@@ -66,8 +66,9 @@ class IRC extends ServerConnectorPlugin {
       if(nick === self._client.nick) {
         GLOBAL.logger.info(`${self._pluginName}|${self._id}: Kicked from ${channel} by ${by} for ${reason}. Removing channel from config.`);
         var index = self._config.channels.indexOf(channel);
-        if(index > -1) {
+        while(index > -1) {
           self._config.channels.splice(index, 1);
+          index = self._config.channels.indexOf(channel);
         }
         self._AKP48.saveConfig(self._config, self._id, true);
       }
