@@ -1,4 +1,4 @@
-function load(persistObjs) {
+function load(persistObjs, startTime) {
   require('./lib/polyfill'); //load polyfill
   var AKP48 = require('./lib/AKP48');
   var config;
@@ -24,14 +24,14 @@ function load(persistObjs) {
   GLOBAL.logger = logger;
 
   //load the bot.
-  GLOBAL.AKP48 = new AKP48(config, reload, persistObjs);
+  GLOBAL.AKP48 = new AKP48(config, reload, persistObjs, startTime);
 }
 
-function reload(persistObjs) {
+function reload(persistObjs, startTime) {
   delete GLOBAL.AKP48;
   GLOBAL.logger.info('Reloading AKP48.');
   delete GLOBAL.logger;
-  load(persistObjs);
+  load(persistObjs, startTime);
 }
 
 load();
