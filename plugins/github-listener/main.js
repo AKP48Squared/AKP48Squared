@@ -177,18 +177,6 @@ GitHubListener.prototype.handle = function (branch, data) {
         }
       }
     }
-
-    // data.commits.some(function (commit) {
-    //   commit.modified.some(function (file) {
-    //     if (hot_files.indexOf(file) !== -1) {
-    //       shutdown = true;
-    //     } else if (file.endsWith('package.json')) {
-    //       npm = true;
-    //     }
-    //     return shutdown;
-    //   });
-    //   return shutdown;
-    // });
   }
 
   GLOBAL.logger.debug(`${this._pluginName}: Updating to branch "${branch}".`);
