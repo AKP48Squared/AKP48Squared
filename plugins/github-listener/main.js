@@ -186,7 +186,7 @@ GitHubListener.prototype.handle = function (branch, data) {
     return;
   }
 
-  if(npm || shutdown) {
+  if(npm) {
     GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
     shell.exec('npm install');
   }
@@ -209,7 +209,7 @@ GitHubListener.prototype.handle = function (branch, data) {
         shell.cd(files[j]);
 
         proms.push(new Promise(function(resolve){ // jshint ignore:line
-          if(npm || shutdown) {
+          if(npm) {
             GLOBAL.logger.debug(`${self._pluginName}: Executing npm install for ${files[j]}.`);
             shell.exec('npm install', function(){
               resolve();
