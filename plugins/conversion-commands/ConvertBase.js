@@ -12,7 +12,7 @@ var ConvertBase = function (num) {
         from : function (baseFrom) {
             return {
                 to : function (baseTo) {
-                    return parseInt(num, baseFrom).toString(baseTo);
+                    return parseInt(num, baseFrom).toString(baseTo).toUpperCase();
                 }
             };
         }
