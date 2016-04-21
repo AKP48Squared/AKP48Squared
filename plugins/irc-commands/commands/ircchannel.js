@@ -5,11 +5,12 @@ function IRCChannel() {
 IRCChannel.prototype.respond = function (context) {
   var IRC = context.instance;
   var chans = [];
+  var chanText = context.text.split(' ');
 
   // verify each chan is actually a channel
-  for (var chan in context.text.split(' ')) {
-    if (chan.match(/([#&][^\x07\x2C\s]{0,200})/)) {
-      chans.push(chan);
+  for (var i = 0; i < chanText.length; i++) {
+    if (chanText[i].match(/([#&][^\x07\x2C\s]{0,200})/)) {
+      chans.push(chanText[i]);
     }
   }
 
