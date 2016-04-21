@@ -83,6 +83,10 @@ class Discord extends ServerConnectorPlugin {
     }
     if(this._connected) {
       GLOBAL.logger.silly(`${this._pluginName}|${this._id}: Reusing previous connection.`);
+      //set game status if configured.
+      if(this._config.game) {
+        this._client.User.setStatus('idle', {name: `${this._config.game}.`});
+      }
       this._connected = false;
       return;
     } else {
