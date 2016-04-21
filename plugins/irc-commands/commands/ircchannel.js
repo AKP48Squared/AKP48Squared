@@ -41,7 +41,7 @@ IRCChannel.prototype.respond = function (context) {
       // Leaving
       chans.forEach(function (c) {
         if(!IRC._config.channels.includes(c)) { // Don't leave channels we're not part of
-          continue;
+          return;
         }
         IRC._client.part(c, function() {
           if(IRC._config.channels.includes(c)) {
