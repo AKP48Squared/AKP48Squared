@@ -53,6 +53,7 @@ BasicCommands.prototype.handleCommand = function (message, context, resolve) {
             for (var i = 0; i < data.commands[name].perms.length; i++) {
               if(context.permissions.includes(data.commands[name].perms[i])) {
                 canRun = true;
+                break;
               }
             }
 
