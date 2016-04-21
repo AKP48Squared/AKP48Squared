@@ -13,9 +13,7 @@ IRCChannel.prototype.respond = function (context) {
       chans.push(chanText[i]);
     }
   }
-
-  GLOBAL.logger.silly(`IRCChannel: ${context.command} ${chans.length}`);
-
+  
   switch(context.command) {
     default:
     case 'chan':
@@ -48,7 +46,7 @@ IRCChannel.prototype.respond = function (context) {
         }
         IRC._client.part(c, function() {
           if(IRC._config.channels.includes(c)) {
-            IRC._config.channels.split(IRC._config.channels.indexOf(c), 1);
+            IRC._config.channels.splice(IRC._config.channels.indexOf(c), 1);
           }
           IRC._AKP48.saveConfig(IRC._config, IRC._id, true);
         });
