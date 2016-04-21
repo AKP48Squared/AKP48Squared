@@ -88,7 +88,7 @@ class Skype extends ServerConnectorPlugin {
 }
 
 Skype.prototype.createContextsFromMessage = function (bot, data) {
-  var textArray = data.content.split('|');
+  var textArray = data.content.split(/[^\\]\|/);
   var ctxs = [];
 
   for (var i = 0; i < textArray.length; i++) {

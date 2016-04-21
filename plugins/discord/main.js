@@ -108,7 +108,7 @@ Discord.prototype.createContextsFromMessage = function (msg) {
   }
 
   var text = msg.message.content;
-  var textArray = text.split('|');
+  var textArray = text.split(/[^\\]\|/);
   var ctxs = [];
 
   for (var i = 0; i < textArray.length; i++) {

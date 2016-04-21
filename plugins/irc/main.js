@@ -124,7 +124,7 @@ class IRC extends ServerConnectorPlugin {
 }
 
 IRC.prototype.createContextsFromMessage = function (message, to) {
-  var textArray = message.args[1].split('|');
+  var textArray = message.args[1].split(/[^\\]\|/);
   var ctxs = [];
 
   for (var i = 0; i < textArray.length; i++) {

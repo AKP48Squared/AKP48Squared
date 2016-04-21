@@ -88,7 +88,7 @@ class Twitch extends ServerConnectorPlugin {
 }
 
 Twitch.prototype.createContexts = function (to, user, text) {
-  var textArray = text.split('|');
+  var textArray = text.split(/[^\\]\|/);
   var ctxs = [];
 
   for (var i = 0; i < textArray.length; i++) {
