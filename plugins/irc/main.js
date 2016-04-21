@@ -134,10 +134,13 @@ IRC.prototype.createContextsFromMessage = function (message, to) {
       textArray[i] = textArray[i].slice(delimiterLength).trim();
     }
 
+    var perms = this.getPermissions(`${message.user}@${message.host}`, message.nick, to);
+
     var ctx = {
       rawMessage: message,
       nick: message.nick,
       user: message.prefix,
+      permissions: perms,
       rawText: message.args[1],
       text: textArray[i].trim(),
       to: to,
@@ -170,6 +173,45 @@ IRC.prototype.isTextACommand = function (text, channel) {
   }
 
   return false;
+};
+
+IRC.prototype.getPermissions = function (prefix, nick, channel) {
+  var users = {};
+  var configPerms = {};
+  var globPerms = {};
+  var outputPerms = [];
+
+  if(nick !== channel) {
+    users = this._client.chans[channel.toLowerCase()].users;
+    configPerms = this.getChannelConfig(channel).users;
+    globPerms = this.getChannelConfig('global').users;
+  } else {
+    configPerms = this.getChannelConfig('global').users;
+  }
+
+  if(users && users[nick]) {
+    switch(users[nick]) {
+      case '@':
+        outputPerms.push('irc.channel.op');
+        break;
+      default:
+        break;
+    }
+  }
+
+  if(configPerms) {
+    if(configPerms[prefix]) {
+      outputPerms.push.apply(outputPerms, configPerms[prefix]);
+    }
+  }
+
+  if(globPerms) {
+    if(globPerms[prefix]) {
+      outputPerms.push.apply(outputPerms, globPerms[prefix]);
+    }
+  }
+
+  return outputPerms;
 };
 
 IRC.prototype.getPersistentObjects = function () {
