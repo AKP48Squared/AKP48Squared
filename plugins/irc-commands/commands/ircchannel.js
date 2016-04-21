@@ -28,11 +28,11 @@ IRCChannel.prototype.respond = function (context) {
         IRC._client.join(c, function() {
           if(!IRC._config.channels.includes(c)) {
             IRC._config.channels.push(c);
-            IRC._AKP48.saveConfig(IRC._config, IRC._id, true);
           }
           var joinMsg = `Hello, everyone! I'm AKP48! I respond to commands and generally try to be helpful. For more information, say ".help"!`;
           IRC._client.say(channel, joinMsg);
           IRC._AKP48.sentMessage(channel, joinMsg, {myNick: IRC._client.nick, instanceId: IRC._id});
+          IRC._AKP48.saveConfig(IRC._config, IRC._id, true);
         });
       });
       break;
@@ -46,8 +46,8 @@ IRCChannel.prototype.respond = function (context) {
         IRC._client.part(c, function() {
           if(IRC._config.channels.includes(c)) {
             IRC._config.channels.split(IRC._config.channels.indexOf(c), 1);
-            IRC._AKP48.saveConfig(IRC._config, IRC._id, true);
           }
+          IRC._AKP48.saveConfig(IRC._config, IRC._id, true);
         });
       });
       break;
