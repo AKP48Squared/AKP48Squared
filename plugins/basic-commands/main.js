@@ -42,7 +42,8 @@ BasicCommands.prototype.handleCommand = function (message, context, resolve) {
         var name = this.commands[cmd].names[0];
 
         //check permissions. if command requires permissions
-        if(this._data.commands[name] && this._data.commands[name].perms && this._data.commands[name].perms.length) {
+        if(this._data && this._data.commands && this._data.commands[name] &&
+          this._data.commands[name].perms && this._data.commands[name].perms.length) {
           //and we don't have any at all, simply log and do nothing else
           if(!context.permissions) {
             GLOBAL.logger.silly(`${this._pluginName}: Command ${command} requires permissions and none were found.`);
