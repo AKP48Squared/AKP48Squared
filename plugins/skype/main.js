@@ -52,8 +52,8 @@ class Skype extends ServerConnectorPlugin {
     });
 
     this._server = restify.createServer({
-      key: require('fs').readFileSync(config.keyLoc),
-      cert: require('fs').readFileSync(config.certLoc)
+      key: require('fs').readFileSync(require('path').resolve(require('app-root-path').path, config.keyLoc)),
+      cert: require('fs').readFileSync(require('path').resolve(require('app-root-path').path, config.certLoc))
     });
 
     //this._server.use(skype.ensureHttps(true));
