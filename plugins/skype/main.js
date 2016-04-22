@@ -14,7 +14,7 @@ class Skype extends ServerConnectorPlugin {
       this._error = true;
       return;
     }
-    if(!config.key || !config.cert) {
+    if(!config.keyLoc || !config.certLoc) {
       GLOBAL.logger.error(`${this._pluginName}: No certificate and/or key found! Cannot start Skype plugin.`);
       this._error = true;
       return;
@@ -55,8 +55,8 @@ class Skype extends ServerConnectorPlugin {
       this._server = persistentObjects.server;
     } else {
       this._server = restify.createServer({
-        key: config.key,
-        cert: config.cert
+        key: require('fs').readFileSync(config.keyLoc),
+        cert: require('fs').readFileSync(config.certLoc)
       });
     }
 
