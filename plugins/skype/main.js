@@ -137,6 +137,8 @@ Skype.prototype.isTextACommand = function (text) {
 };
 
 Skype.prototype.getPersistentObjects = function () {
+  //manually stop the server before returning, since AKP48 won't request it for us.
+  this.disconnect();
   return {
     botService: this._botService
   };
