@@ -13,12 +13,12 @@ IRCChannel.prototype.respond = function (context) {
       chans.push(chanText[i]);
     }
   }
-  
+
   switch(context.command) {
     default:
     case 'chan':
       // Usage, for now. Later perhaps allow +/-channel
-      return '(join|part) channel [channel...]';
+      return '(join|part) <channel> [channel...]';
     case 'join':
     case '+':
       // Joining
