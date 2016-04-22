@@ -51,14 +51,10 @@ class Skype extends ServerConnectorPlugin {
       self._AKP48.onMessage(data.content, self.createContextsFromMessage(bot, data));
     });
 
-    if(persistentObjects) {
-      this._server = persistentObjects.server;
-    } else {
-      this._server = restify.createServer({
-        key: require('fs').readFileSync(config.keyLoc),
-        cert: require('fs').readFileSync(config.certLoc)
-      });
-    }
+    this._server = restify.createServer({
+      key: require('fs').readFileSync(config.keyLoc),
+      cert: require('fs').readFileSync(config.certLoc)
+    });
 
     //this._server.use(skype.ensureHttps(true));
     this._server.use(skype.verifySkypeCert());
@@ -142,8 +138,7 @@ Skype.prototype.isTextACommand = function (text) {
 
 Skype.prototype.getPersistentObjects = function () {
   return {
-    botService: this._botService,
-    server: this._server
+    botService: this._botService
   };
 };
 
