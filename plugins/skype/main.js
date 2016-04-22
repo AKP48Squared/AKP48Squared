@@ -14,6 +14,11 @@ class Skype extends ServerConnectorPlugin {
       this._error = true;
       return;
     }
+    if(!config.key || !config.cert) {
+      GLOBAL.logger.error(`${this._pluginName}: No certificate and/or key found! Cannot start Skype plugin.`);
+      this._error = true;
+      return;
+    }
     var self = this;
     this._defaultCommandDelimiters = ['!', '.'];
     if(persistentObjects) {
@@ -49,11 +54,14 @@ class Skype extends ServerConnectorPlugin {
     if(persistentObjects) {
       this._server = persistentObjects.server;
     } else {
-      this._server = restify.createServer();
+      this._server = restify.createServer({
+        key: config.key,
+        cert: config.cert
+      });
     }
 
     this._server.use(skype.ensureHttps(true));
-    //this._server.use(skype.verifySkypeCert());
+    this._server.use(skype.verifySkypeCert());
     this._server.post('/v1/chat', skype.messagingHandler(this._botService));
     this._port = config.port || 9658;
 
