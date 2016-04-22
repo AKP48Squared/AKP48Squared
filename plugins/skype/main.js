@@ -60,7 +60,7 @@ class Skype extends ServerConnectorPlugin {
       });
     }
 
-    this._server.use(skype.ensureHttps(true));
+    //this._server.use(skype.ensureHttps(true));
     this._server.use(skype.verifySkypeCert());
     this._server.post('/v1/chat', skype.messagingHandler(this._botService));
     this._port = config.port || 9658;
