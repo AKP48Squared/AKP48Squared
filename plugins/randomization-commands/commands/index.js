@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = function() {
   return new Promise(function(resolve, reject) {
-    var modules = [];
+    var modules = {};
     glob(path.join(__dirname, '*.js'), function(err, files) {
       if(err){reject(err); return;}
       for (var i = 0; i < files.length; i++) {
