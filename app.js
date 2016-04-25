@@ -6,6 +6,9 @@ function load(persistObjs, startTime) {
 
   try {
     config = require('./config.json');
+    if(!config.productionMode) {
+      require('longjohn');
+    }
   } catch(e) {
     console.log('No config file found.');
     //no config, so set config to null.
@@ -35,3 +38,7 @@ function reload(persistObjs, startTime) {
 }
 
 load();
+
+process.on('uncaughtException', function(err) {
+  GLOBAL.logger.error(`Uncaught Exception! Error: ${err}.`);
+});

@@ -23,6 +23,7 @@
     "glob": "^7.0.3",
     "irc-colors": "^1.2.1",
     "jsonfile": "^2.2.3",
+    "longjohn": "^0.2.11",
     "node-uuid": "^1.4.7",
     "shelljs": "^0.6.0",
     "winston": "^2.2.0"
