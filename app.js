@@ -13,9 +13,9 @@ function load(persistObjs, startTime) {
   }
 
   try {
-    logger = require('./lib/Logger')(config.logger.level || 'info');
+    logger = require('./lib/Logger')(config.logger.level || 'info', config.logger.fileLevel || 'info');
   } catch(e) {
-    logger = require('./lib/Logger')('info');
+    logger = require('./lib/Logger')('info', 'info');
   }
 
   logger.info('AKP48 is starting.');
