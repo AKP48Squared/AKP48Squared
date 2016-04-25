@@ -9,7 +9,7 @@ class IRCCommands extends BasicCommands {
     //manually override pluginName, since we're extending another plugin.
     this._pluginName = 'IRCCommands';
     var self = this;
-    this.commands = [];
+    this.commands = {};
     require('./commands').then(function(res){
       self.commands = res;
     }, function(err){
