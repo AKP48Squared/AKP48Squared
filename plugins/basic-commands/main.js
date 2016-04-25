@@ -30,7 +30,6 @@ BasicCommands.prototype.handleCommand = function (message, context, resolve) {
   //for each command we have
   for (var cmd in this.commands) {
     if (this.commands.hasOwnProperty(cmd)) {
-
       //check to see if it's the command we're wanting
       GLOBAL.logger.silly(`${this._pluginName}: Checking ${cmd} command for ${command}.`);
 
@@ -47,28 +46,26 @@ BasicCommands.prototype.handleCommand = function (message, context, resolve) {
           //and we don't have any at all, simply log and do nothing else
           if(!context.permissions) {
             GLOBAL.logger.silly(`${this._pluginName}: Command ${command} requires permissions and none were found.`);
-          } else {
-            //but if we have some permissions, loop through command perms and see if we have any of them.
-            var canRun = false;
-            for (var i = 0; i < this._data.commands[name].perms.length; i++) {
-              if(context.permissions.includes(this._data.commands[name].perms[i])) {
-                canRun = true;
-                break;
-              }
-            }
-
-            //canRun will be true if we have any of the required permissions, so we run
-            if(canRun) {
-              resolve(this.commands[cmd].respond(context));
-            } else {
-              //otherwise we can log and leave.
-              GLOBAL.logger.silly(`${this._pluginName}: Command ${command} requires permissions and none were found.`);
+            return;
+          }
+          //but if we have some permissions, loop through command perms and see if we have any of them.
+          var block = true;
+          for (var i = 0; i < this._data.commands[name].perms.length; i++) {
+            if(context.permissions.includes(this._data.commands[name].perms[i])) {
+              block = false;
+              break;
             }
           }
-        } else {
-          //if we get here, the command doesn't require permissions, so we just run it.
-          resolve(this.commands[cmd].respond(context));
+
+          // If we don't have any of the permissions, log and leave
+          if(block) {
+            GLOBAL.logger.silly(`${this._pluginName}: Command ${command} requires permissions and none were found.`);
+            return;
+          }
         }
+        
+        // If we get here, we passed all checks, so we just run it.
+        resolve(this.commands[cmd].respond(context));
       }
     }
   }
