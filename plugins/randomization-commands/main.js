@@ -9,7 +9,7 @@ class RandomizationCommands extends BasicCommands {
     //manually override pluginName, since we're extending another plugin.
     this._pluginName = 'RandomizationCommands';
     var self = this;
-    this.commands = {};
+    this.commands = [];
     require('./commands').then(function(res){
       self.commands = res;
     }, function(err){
