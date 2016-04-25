@@ -42,6 +42,7 @@ class Discord extends ServerConnectorPlugin {
 
     this._client.Dispatcher.on('GATEWAY_RESUMED', () => {
       GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Reconnected as ${this._client.User.username}.`);
+      self._AKP48.emit('serverConnect', self._id, self);
       //set game status if configured.
       if(this._config.game) {
         this._client.User.setStatus('idle', {name: `${this._config.game}.`});

@@ -80,6 +80,7 @@ class Skype extends ServerConnectorPlugin {
       this._server.listen(this._port);
       GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Server listening for incoming requests on port ${this._port}.`);
     }
+    this._AKP48.emit('serverConnect', this._id, this);
   }
 
   disconnect() {

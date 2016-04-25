@@ -43,6 +43,7 @@ class Twitch extends ServerConnectorPlugin {
 
     this._client.on('connected', function(address, port) {
       GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Connected to ${address}:${port}.`);
+      self._AKP48.emit('serverConnect', self._id, self);
     });
 
     this._client.on('disconnected', function(reason) {
