@@ -46,7 +46,7 @@ BasicCommands.prototype.handleCommand = function (message, context, resolve) {
           //and we don't have any at all, simply log and do nothing else
           if(!context.permissions) {
             GLOBAL.logger.silly(`${this._pluginName}: Command ${command} requires permissions and none were found.`);
-            return;
+            continue;
           }
           //but if we have some permissions, loop through command perms and see if we have any of them.
           var block = true;
@@ -60,7 +60,7 @@ BasicCommands.prototype.handleCommand = function (message, context, resolve) {
           // If we don't have any of the permissions, log and leave
           if(block) {
             GLOBAL.logger.silly(`${this._pluginName}: Command ${command} requires permissions and none were found.`);
-            return;
+            continue;
           }
         }
         
