@@ -59,6 +59,27 @@ class GitHubListener extends BackgroundTaskPlugin {
 
         var branch = ref.substring(ref.indexOf('/', 5) + 1);
 
+        //send out alert.
+        var commits = `${data.commits.length} commit`.pluralize(data.commits.length);
+        var url = data.compare;
+
+        var msg = `${c.pink('[GitHub]')} ${commits} ${data.forced && !data.created ? 'force ' : ''}pushed to ${data.created ? 'new ' : ''}`;
+        msg += `${data.ref.startsWith('refs/tags/') ? 'tag ' : 'branch '}${c.bold(branch)} by ${data.pusher.name} `;
+        msg += `(${url})`;
+
+        for (var i = 0; i < data.commits.length && i < 3; i++) {
+            var _c = data.commits[data.commits.length - 1 - i];
+            var _m = _c.message;
+            var end = _m.indexOf('\n');
+            var commit_msg = c.green(`[${_c.id.substring(0,7)}] `);
+            commit_msg += `${_c.author.username}: ${_m.substring(0, end === -1 ? _m.length : end)}`;
+            msg += `\n${commit_msg}`;
+        }
+
+        GLOBAL.logger.debug(`${this._pluginName}: Sending alert.`);
+
+        this._AKP48.sendMessage(msg, {isAlert: true});
+
         if(self.shouldUpdate(branch)) {
           self.handle(branch, data);
         }
@@ -109,28 +130,6 @@ GitHubListener.prototype.shouldUpdate = function (branch) {
 GitHubListener.prototype.handle = function (branch, data) {
   var self = this;
   GLOBAL.logger.info(`${this._pluginName}: Handling Webhook for branch ${branch}.`);
-
-  //send out alert.
-  var commits = `${data.commits.length} commit`.pluralize(data.commits.length);
-  var url = data.compare;
-
-  var msg = `${c.pink('[GitHub]')} ${commits} ${data.forced && !data.created ? 'force ' : ''}pushed to ${data.created ? 'new ' : ''}`;
-  msg += `${data.ref.startsWith('refs/tags/') ? 'tag ' : 'branch '}${c.bold(branch)} by ${data.pusher.name} `;
-  msg += `(${url})`;
-
-  for (var i = 0; i < data.commits.length && i < 3; i++) {
-      var _c = data.commits[data.commits.length - 1 - i];
-      var _m = _c.message;
-      var end = _m.indexOf('\n');
-      var commit_msg = c.green(`[${_c.id.substring(0,7)}] `);
-      commit_msg += `${_c.author.username}: ${_m.substring(0, end === -1 ? _m.length : end)}`;
-      msg += `\n${commit_msg}`;
-  }
-
-  GLOBAL.logger.debug(`${this._pluginName}: Sending alert.`);
-
-  this._AKP48.sendMessage(msg, {isAlert: true});
-
 
   if (!shell.which('git') || !this._isRepo) {
     GLOBAL.logger.debug(`${this._pluginName}: Not a git repo; stopping update.`);
