@@ -14,6 +14,13 @@
         "AKP48.op"
       ]
     },
+    "nick": {
+      "helpText": "Changes the bot's nickname.",
+      "usageText": "<newNick>",
+      "perms": [
+        "AKP48.owner"
+      ]
+    },
     "rainbow": {
       "helpText": "Rainbow text is best text.",
       "perms": []
