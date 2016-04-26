@@ -76,9 +76,9 @@ class GitHubListener extends BackgroundTaskPlugin {
             msg += `\n${commit_msg}`;
         }
 
-        GLOBAL.logger.debug(`${this._pluginName}: Sending alert.`);
+        GLOBAL.logger.debug(`${self._pluginName}: Sending alert.`);
 
-        this._AKP48.sendMessage(msg, {isAlert: true});
+        self._AKP48.sendMessage(msg, {isAlert: true});
 
         if(self.shouldUpdate(branch)) {
           self.handle(branch, data);
