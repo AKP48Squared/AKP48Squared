@@ -22,6 +22,7 @@ class Twitch extends ServerConnectorPlugin {
     if(persistentObjects) {
       this._client = persistentObjects.client;
       this._client.removeAllListeners('chat');
+      this._client.removeAllListeners('whisper');
       this._client.removeAllListeners('connecting');
       this._client.removeAllListeners('connected');
       this._client.removeAllListeners('disconnected');
@@ -35,6 +36,11 @@ class Twitch extends ServerConnectorPlugin {
       if(!sentFromSelf) {
         self._AKP48.onMessage(text, self.createContexts(to, user, text));
       }
+    });
+
+    this._client.on('whisper', function(user, text) {
+      var to = user.username;
+      self._AKP48.onMessage(text, self.createContexts(to, user, text, true));
     });
 
     this._client.on('connecting', function(address, port) {
@@ -56,7 +62,11 @@ class Twitch extends ServerConnectorPlugin {
 
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
       if(!context.noPrefix) {message = `@${context.nick}: ${message}`;}
-      self._client.say(to, message);
+      if(context.isWhisper) {
+        self._client.whisper(to, message);
+      } else {
+        self._client.say(to, message);
+      }
       self._AKP48.sentMessage(to, message, context);
     });
 
@@ -88,7 +98,7 @@ class Twitch extends ServerConnectorPlugin {
   }
 }
 
-Twitch.prototype.createContexts = function (to, user, text) {
+Twitch.prototype.createContexts = function (to, user, text, isWhisper) {
   var textArray = text.split(/[^\\]\|/);
   var ctxs = [];
 
@@ -112,6 +122,10 @@ Twitch.prototype.createContexts = function (to, user, text) {
       instance: this,
       isCmd: delimiterLength ? true : false
     };
+
+    if(isWhisper) {
+      ctx.isWhisper = true;
+    }
 
     ctxs.push(ctx);
   }
