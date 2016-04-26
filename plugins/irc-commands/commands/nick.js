@@ -10,6 +10,7 @@ Nick.prototype.respond = function (context) {
     //save IRC config
     var conf = context.instance._config;
     conf.nick = context.text;
+    context.instance._client.opt.nick = context.text;
 
     GLOBAL.AKP48.saveConfig(conf, context.instanceId, true);
   }
