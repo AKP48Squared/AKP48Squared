@@ -187,6 +187,7 @@ GitHubListener.prototype.handle = function (branch, data) {
 
   if(npm) {
     GLOBAL.logger.debug(`${this._pluginName}: Executing npm install.`);
+    shell.cd(require('app-root-path').path);
     shell.exec('npm install');
   }
 
