@@ -6,9 +6,6 @@ function load(persistObjs, startTime) {
 
   try {
     config = require('./config.json');
-    if(!config.productionMode) {
-      require('longjohn');
-    }
   } catch(e) {
     console.log('No config file found.');
     //no config, so set config to null.
@@ -20,6 +17,12 @@ function load(persistObjs, startTime) {
   } catch(e) {
     logger = require('./lib/Logger')('info', 'info');
   }
+
+  try {
+    if(!config.productionMode) {
+      require('longjohn');
+    }
+  } catch(e) {}
 
   logger.info('AKP48 is starting.');
 
