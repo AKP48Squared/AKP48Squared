@@ -3,7 +3,7 @@ function PullRequests() {
 }
 
 PullRequests.prototype.respond = function () {
-  return 'https://github.com/AKPWebDesign/AKP48Squared/pulls';
+  return 'https://github.com/AKP48Squared/AKP48Squared/pulls';
 };
 
 module.exports = PullRequests;

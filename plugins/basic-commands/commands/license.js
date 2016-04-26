@@ -3,7 +3,7 @@ function License() {
 }
 
 License.prototype.respond = function () {
-  return 'https://github.com/AKPWebDesign/AKP48Squared/blob/master/LICENSE';
+  return 'https://github.com/AKP48Squared/AKP48Squared/blob/master/LICENSE';
 };
 
 module.exports = License;

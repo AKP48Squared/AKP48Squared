@@ -3,7 +3,7 @@ function Credits() {
 }
 
 Credits.prototype.respond = function () {
-  return `https://github.com/AKPWebDesign/AKP48Squared/blob/master/CREDITS.md`;
+  return `https://github.com/AKP48Squared/AKP48Squared/blob/master/CREDITS.md`;
 };
 
 module.exports = Credits;

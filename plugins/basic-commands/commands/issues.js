@@ -3,7 +3,7 @@ function Issues() {
 }
 
 Issues.prototype.respond = function () {
-  return 'https://github.com/AKPWebDesign/AKP48Squared/issues';
+  return 'https://github.com/AKP48Squared/AKP48Squared/issues';
 };
 
 module.exports = Issues;

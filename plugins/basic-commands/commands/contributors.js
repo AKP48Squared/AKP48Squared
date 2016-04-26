@@ -3,7 +3,7 @@ function Contributors() {
 }
 
 Contributors.prototype.respond = function () {
-  return `https://github.com/AKPWebDesign/AKP48Squared/graphs/contributors`;
+  return `https://github.com/AKP48Squared/AKP48Squared/graphs/contributors`;
 };
 
 module.exports = Contributors;
