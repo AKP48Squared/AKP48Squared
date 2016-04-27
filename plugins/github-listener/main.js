@@ -18,9 +18,9 @@ class GitHubListener extends BackgroundTaskPlugin {
         port: 4269,
         path: '/github/callback',
         secret: '',
-        repository: 'AKPWebDesign/AKP48Squared',
+        repository: 'AKP48Squared',
         branch: 'master',
-        autoUpdate: true,
+        autoUpdate: false,
         enabled: true
       };
 
