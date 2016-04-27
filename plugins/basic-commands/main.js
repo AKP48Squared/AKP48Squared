@@ -1,5 +1,6 @@
 'use strict';
-const MessageHandlerPlugin = require('../../lib/MessageHandlerPlugin');
+const path = require('path');
+const MessageHandlerPlugin = require(path.resolve(require('app-root-path').path, `lib/MessageHandlerPlugin`));
 
 class BasicCommands extends MessageHandlerPlugin {
   constructor(AKP48) {
@@ -63,7 +64,7 @@ BasicCommands.prototype.handleCommand = function (message, context, resolve) {
             continue;
           }
         }
-        
+
         // If we get here, we passed all checks, so we just run it.
         resolve(this.commands[cmd].respond(context));
       }
