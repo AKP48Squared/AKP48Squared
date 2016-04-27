@@ -44,4 +44,5 @@ load();
 
 process.on('uncaughtException', function(err) {
   GLOBAL.logger.error(`Uncaught Exception! Error: ${err}.`);
+  console.log(err.stack);
 });
