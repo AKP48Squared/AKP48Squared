@@ -108,7 +108,7 @@ class GitHubListener extends BackgroundTaskPlugin {
         if(data.action === 'assigned' || data.action === 'unassigned') {
           data.action += ` ${data.label}`;
         }
-        var out = `${c.pink('[GitHub]')} Issue ${data.number} ${data.action}. Title: ${data.issue.title}`;
+        var out = `${c.pink('[GitHub]')} Issue ${data.issue.number} ${data.action}. Title: ${data.issue.title}`;
 
         self._AKP48.sendMessage(out, {isAlert: true});
       });
