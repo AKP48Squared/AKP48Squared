@@ -1,6 +1,6 @@
 'use strict';
 // const MessageHandlerPlugin = require('../../lib/MessageHandlerPlugin');
-const BasicCommands = require('../basic-commands/main.js');
+const BasicCommands = require('akp48-plugin-basic-commands');
 
 class IRCCommands extends BasicCommands {
   constructor(AKP48) {
