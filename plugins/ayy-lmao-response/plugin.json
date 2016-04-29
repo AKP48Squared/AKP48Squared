@@ -1,6 +1,0 @@
-{
-  "name": "ayy-lmao-response",
-  "type": "MessageHandler",
-  "description": "Ayy lmao",
-  "main": "main.js"
-}
