@@ -84,6 +84,63 @@ class GitHubListener extends BackgroundTaskPlugin {
           self.handle(branch, data);
         }
       });
+
+      this._listener.on(`pull_request:${this._config.repository}`, function(ref, data) {
+        if(data.action === 'closed' && data.pull_request.merged) {
+          data.action = 'merged';
+        }
+        if(data.pull_request.title.length >= 80) {
+          data.pull_request.title = data.pull_request.title.substring(0,80) + '...';
+        }
+        var out = `${c.pink('[GitHub]')} Pull Request ${data.number} ${data.action}. Title: ${data.pull_request.title}`;
+
+        self._AKP48.sendMessage(out, {isAlert: true});
+      });
+
+      this._listener.on(`issues:${this._config.repository}`, function(ref, data) {
+        if(data.issue.title.length >= 80) {
+          data.issue.title = data.issue.title.substring(0,80) + '...';
+        }
+        if(data.action === 'assigned' || data.action === 'unassigned') {
+          data.action += ` ${data.action === 'unassigned' ? 'from' : 'to'} ${data.assignee}`;
+        }
+
+        if(data.action === 'assigned' || data.action === 'unassigned') {
+          data.action += ` ${data.label}`;
+        }
+        var out = `${c.pink('[GitHub]')} Issue ${data.number} ${data.action}. Title: ${data.issue.title}`;
+
+        self._AKP48.sendMessage(out, {isAlert: true});
+      });
+
+      this._listener.on(`issue_comment:${this._config.repository}`, function(ref, data) {
+        if(data.comment.body.length >= 80) {
+          data.comment.body = data.comment.body.substring(0,80) + '...';
+        }
+        var out = `${c.pink('[GitHub]')} New comment on issue ${data.issue.number} by ${c.bold(data.comment.user.login)}. ${data.comment.body} (${data.comment.html_url})`;
+
+        self._AKP48.sendMessage(out, {isAlert: true});
+      });
+
+      this._listener.on(`gollum:${this._config.repository}`, function(ref, data) {
+        for (var i = 0; i < data.pages.length; i++) {
+          var pg = data.pages[i];
+          var out = `${c.pink('[GitHub]')} Wiki Page ${c.bold(pg.page_name)} ${pg.action}. (${pg.html_url})`;
+          self._AKP48.sendMessage(out, {isAlert: true});
+        }
+      });
+
+      this._listener.on(`fork:${this._config.repository}`, function(ref, data) {
+        var out = `${c.pink('[GitHub]')} New Fork! ${c.bold(data.sender.login)} forked the repo! (${data.forkee.html_url})`;
+
+        self._AKP48.sendMessage(out, {isAlert: true});
+      });
+
+      this._listener.on(`watch:${this._config.repository}`, function(ref, data) {
+        var out = `${c.pink('[GitHub]')} New Star! ${c.bold(data.sender.login)} starred the repo!`;
+
+        self._AKP48.sendMessage(out, {isAlert: true});
+      });
     }
   }
 }
