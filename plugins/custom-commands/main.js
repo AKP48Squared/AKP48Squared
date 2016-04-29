@@ -9,7 +9,8 @@ class Custom extends MessageHandlerPlugin {
     try {
       this.commands = require('./commands.json');
     } catch(e) {
-      GLOBAL.logger.error(`${this._pluginName}: Error loading commands. Check your JSON for errors.`);
+      GLOBAL.logger.error(`${this._pluginName}: Error loading commands. Check your JSON for errors. Disabling saving so you don't lose any data.`);
+      this.disableSaving = true;
       this.commands = [];
     }
   }
@@ -110,6 +111,11 @@ Custom.prototype.rmCustom = function (context) {
 };
 
 Custom.prototype.saveCmds = function () {
+  if(this.disableSaving) {
+    GLOBAL.logger.silly(`${this._pluginName}: Saving disabled.`);
+    return;
+  }
+  
   GLOBAL.logger.silly(`${this._pluginName}: Saving commands.json.`);
   jf.writeFileSync(path.join(__dirname, 'commands.json'), this.commands);
 };
