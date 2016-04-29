@@ -130,4 +130,9 @@ Skype.prototype.isTextACommand = function (text) {
   return false;
 };
 
+Skype.prototype.getPersistentObjects = function () {
+  this.disconnect();
+  return {};
+};
+
 module.exports = Skype;
