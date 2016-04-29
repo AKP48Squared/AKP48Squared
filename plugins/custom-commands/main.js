@@ -47,7 +47,7 @@ Custom.prototype.handleCommand = function (message, context, res) {
       var out = this.commands[i].response;
 
       if(context.text) {
-        out = `${context.nick}: ${out}`;
+        out = `${context.text}: ${out}`;
         context.noPrefix = true;
       }
 
