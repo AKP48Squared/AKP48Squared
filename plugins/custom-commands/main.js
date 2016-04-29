@@ -27,14 +27,13 @@ Custom.prototype.handleCommand = function (message, context, res) {
   var done = false;
 
   context.text = text.join(' ');
-  context.command = command;
 
-  if(command.toLowerCase === 'addcustom') {
+  if(command.toLowerCase() === 'addcustom') {
     res(this.addCustom(context));
     done = true;
   }
 
-  if(command.toLowerCase === 'rmcustom') {
+  if(command.toLowerCase() === 'rmcustom') {
     res(this.rmCustom(context));
     done = true;
   }
@@ -82,6 +81,8 @@ Custom.prototype.addCustom = function (context) {
   this.commands.push(cmd);
 
   this.saveCmds();
+
+  return `Added command "${cmdName}"`;
 };
 
 Custom.prototype.rmCustom = function (context) {
@@ -92,7 +93,9 @@ Custom.prototype.rmCustom = function (context) {
   var changed = false;
 
   for (var i = 0; i < this.commands.length; i++) {
-    if(this.commands[i].name.toLowerCase() === cmdName.toLowerCase()) {
+    var cmd = this.commands[i];
+    if(cmd.name.toLowerCase() === cmdName.toLowerCase() &&
+       cmd.instanceId === context.instanceId && cmd.channel === context.to) {
       this.commands.splice(i, 1);
       changed = true;
     }
@@ -100,6 +103,9 @@ Custom.prototype.rmCustom = function (context) {
 
   if(changed) {
     this.saveCmds();
+    return `Removed command "${cmdName}"`;
+  } else {
+    return `No commands by that name were found!`;
   }
 };
 
