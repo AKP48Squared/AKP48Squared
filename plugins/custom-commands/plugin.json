@@ -1,0 +1,16 @@
+{
+  "name": "custom-commands",
+  "type": "MessageHandler",
+  "description": "Custom commands for AKP48.",
+  "main": "main.js",
+  "commands": {
+    "addcustom": {
+      "helpText": "Adds a custom command to the channel you're in.",
+      "perms": []
+    },
+    "rmcustom": {
+      "helpText": "Removes a custom command from the channel you're in.",
+      "perms": []
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "akp48-plugin-custom-commands",
+  "version": "1.0.0",
+  "description": "Custom Commands plugin for AKP48. Allows channels to have their own defined commands.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Austin Peterson <austin@akpwebdesign.com>",
+  "license": "MIT"
+}
