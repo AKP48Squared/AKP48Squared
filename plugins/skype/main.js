@@ -5,7 +5,7 @@ const skype = require('skype-sdk');
 var c = require('irc-colors');
 
 class Skype extends ServerConnectorPlugin {
-  constructor(config, id, AKP48, persistentObjects) {
+  constructor(config, id, AKP48) {
     super('Skype', AKP48);
     this._id = id;
     this._config = config;
@@ -21,23 +21,16 @@ class Skype extends ServerConnectorPlugin {
     }
     var self = this;
     this._defaultCommandDelimiters = ['!', '.'];
-    if(persistentObjects) {
-      this._botService = persistentObjects.botService;
-      this._botService.removeAllListeners('contactAdded');
-      this._botService.removeAllListeners('personalMessage');
-      this._botService.removeAllListeners('groupMessage');
-      this._connected = true;
-    } else {
-      this._botService = new skype.BotService({
-        messaging: {
-          botId: '28:'+config.appId,
-          serverUrl : 'https://apis.skype.com',
-          requestTimeout : 15000,
-          appId: config.appId,
-          appSecret: config.appSecret
-        }
-      });
-    }
+
+    this._botService = new skype.BotService({
+      messaging: {
+        botId: '28:'+config.appId,
+        serverUrl : 'https://apis.skype.com',
+        requestTimeout : 15000,
+        appId: config.appId,
+        appSecret: config.appSecret
+      }
+    });
 
     this._botService.on('contactAdded', (bot, data) => {
       bot.reply(`Hello, ${data.fromDisplayName}! For help, say "!help".`, true);
@@ -135,14 +128,6 @@ Skype.prototype.isTextACommand = function (text) {
   }
 
   return false;
-};
-
-Skype.prototype.getPersistentObjects = function () {
-  //manually stop the server before returning, since AKP48 won't request it for us.
-  this.disconnect();
-  return {
-    botService: this._botService
-  };
 };
 
 module.exports = Skype;
