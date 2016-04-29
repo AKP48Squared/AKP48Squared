@@ -44,6 +44,7 @@ Custom.prototype.handleCommand = function (message, context, res) {
     if(cmd.name.toLowerCase() === command.toLowerCase() &&
        cmd.instanceId === context.instanceId && cmd.channel === context.to) {
 
+      GLOBAL.logger.silly(`${this._pluginName}: Handling ${cmd.name}`);
       var out = this.commands[i].response;
 
       if(context.text) {
@@ -64,6 +65,7 @@ Custom.prototype.handleCommand = function (message, context, res) {
 };
 
 Custom.prototype.addCustom = function (context) {
+  GLOBAL.logger.silly(`${this._pluginName}: Handling addCustom.`);
   //TODO: permissions check.
   var text = context.text.split(' ');
   var cmdName = text[0];
@@ -83,6 +85,7 @@ Custom.prototype.addCustom = function (context) {
 };
 
 Custom.prototype.rmCustom = function (context) {
+  GLOBAL.logger.silly(`${this._pluginName}: Handling rmCustom.`);
   //TODO: permissions check.
   var text = context.text.split(' ');
   var cmdName = text[0];
@@ -101,6 +104,7 @@ Custom.prototype.rmCustom = function (context) {
 };
 
 Custom.prototype.saveCmds = function () {
+  GLOBAL.logger.silly(`${this._pluginName}: Saving commands.json.`);
   jf.writeFileSync(path.join(__dirname, 'commands.json'), this.commands);
 };
 
