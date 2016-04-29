@@ -9,12 +9,11 @@ class Custom extends MessageHandlerPlugin {
     try {
       this.commands = require('./commands.json');
     } catch(e) {
+      this.commands = [];
       if(e instanceof SyntaxError) {
         GLOBAL.logger.error(`${this._pluginName}: Error loading commands. Check your JSON for errors. Disabling saving so you don't lose any data.`);
         this.disableSaving = true;
-        this.commands = [];
       } else if (e.code === 'MODULE_NOT_FOUND') {
-        this.commands = [];
         this.saveCmds();
       }
     }
