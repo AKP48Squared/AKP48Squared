@@ -105,8 +105,8 @@ class GitHubListener extends BackgroundTaskPlugin {
           data.action += ` ${data.action === 'unassigned' ? 'from' : 'to'} ${data.assignee.login}`;
         }
 
-        if(data.action === 'assigned' || data.action === 'unassigned') {
-          data.action += ` ${data.label}`;
+        if(data.action === 'labeled' || data.action === 'unlabeled') {
+          data.action += ` ${data.label.name}`;
         }
         var out = `${c.pink('[GitHub]')} Issue ${data.issue.number} ${data.action}. Title: ${data.issue.title}`;
 
