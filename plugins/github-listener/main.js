@@ -102,7 +102,7 @@ class GitHubListener extends BackgroundTaskPlugin {
           data.issue.title = data.issue.title.substring(0,80) + '...';
         }
         if(data.action === 'assigned' || data.action === 'unassigned') {
-          data.action += ` ${data.action === 'unassigned' ? 'from' : 'to'} ${data.assignee}`;
+          data.action += ` ${data.action === 'unassigned' ? 'from' : 'to'} ${data.assignee.login}`;
         }
 
         if(data.action === 'assigned' || data.action === 'unassigned') {
