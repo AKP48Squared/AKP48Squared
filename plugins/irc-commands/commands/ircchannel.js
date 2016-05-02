@@ -30,7 +30,7 @@ IRCChannel.prototype.respond = function (context) {
           if(!IRC._config.channels.includes(c)) {
             IRC._config.channels.push(c);
           }
-          var joinMsg = `Hello, everyone! I'm AKP48! I respond to commands and generally try to be helpful. For more information, say '.help'!`;
+          var joinMsg = `Hello, everyone! I'm ${IRC._client.nick}! I respond to commands and generally try to be helpful. For more information, say '.help'!`;
           IRC._client.say(c, joinMsg);
           IRC._AKP48.sentMessage(c, joinMsg, {myNick: IRC._client.nick, instanceId: IRC._id});
           IRC._AKP48.saveConfig(IRC._config, IRC._id, true);

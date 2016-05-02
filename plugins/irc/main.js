@@ -55,7 +55,7 @@ class IRC extends ServerConnectorPlugin {
     this._client.on('invite', function(channel, from) {
       GLOBAL.logger.info(`${self._pluginName}|${self._id}: Invite to channel "${channel}" received from ${from}. Joining channel.`);
       self._client.join(channel, function() {
-        var joinMsg = `Hello, everyone! I'm AKP48! I respond to commands and generally try to be helpful. For more information, say ".help"!`;
+        var joinMsg = `Hello, everyone! I'm ${self._client.nick}! I respond to commands and generally try to be helpful. For more information, say ".help"!`;
         self._client.say(channel, joinMsg);
         self._AKP48.sentMessage(channel, joinMsg, {myNick: self._client.nick, instanceId: self._id});
         self._AKP48.saveConfig(self._config, self._id, true);
@@ -64,7 +64,7 @@ class IRC extends ServerConnectorPlugin {
 
     this._client.on('kick', function(channel, nick, by, reason) {
       if(nick === self._client.nick) {
-        GLOBAL.logger.info(`${self._pluginName}|${self._id}: Kicked from ${channel} by ${by} for ${reason}. Removing channel from config.`);
+        GLOBAL.logger.info(`${self._pluginName}|${self._id}: Kicked from ${channel} by ${by} for "${reason}". Removing channel from config.`);
         var index = self._config.channels.indexOf(channel);
         while(index > -1) {
           self._config.channels.splice(index, 1);
