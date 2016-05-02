@@ -1,7 +1,7 @@
 {
   "name": "akp48",
   "version": "3.0.0",
-  "description": "I'm rewriting AKP48 from the ground up.",
+  "description": "A chat bot, extensible via plugins which allow it to connect to servers and respond to commands.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,6 +11,10 @@
     "url": "git+https://github.com/AKPWebDesign/AKP48Squared.git"
   },
   "author": "Austin Peterson <austin@akpwebdesign.com>",
+  "contributors": [
+    "Alan H (Feildmaster) <admin@feildmaster.com> (http://feildmaster.com/)",
+    "Austin Peterson <austin@akpwebdesign.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/AKPWebDesign/AKP48Squared/issues"
@@ -20,16 +24,16 @@
     "akp48-plugin-ayy-lmao-response": "^1.0.0",
     "akp48-plugin-basic-commands": "^1.0.1",
     "akp48-plugin-conversion-commands": "^1.0.0",
-    "akp48-plugin-custom-commands": "^1.0.0",
+    "akp48-plugin-custom-commands": "^1.0.1",
     "akp48-plugin-github-listener": "^1.0.0",
     "akp48-plugin-logger": "^1.0.0",
     "akp48-plugin-randomization-commands": "^1.0.3",
     "app-root-path": "^1.0.0",
-    "bluebird": "^3.3.4",
+    "bluebird": "^3.3.5",
     "enum": "^2.3.0",
     "glob": "^7.0.3",
     "irc-colors": "^1.2.1",
-    "jsonfile": "^2.2.3",
+    "jsonfile": "^2.3.0",
     "longjohn": "^0.2.11",
     "node-uuid": "^1.4.7",
     "shelljs": "^0.6.0",
