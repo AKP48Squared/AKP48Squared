@@ -44,16 +44,16 @@ class Twitch extends ServerConnectorPlugin {
     });
 
     this._client.on('connecting', function(address, port) {
-      GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Connecting to ${address}:${port}.`);
+      GLOBAL.logger.verbose(`${self._pluginName}|${self._id}: Connecting to ${address}:${port}.`);
     });
 
     this._client.on('connected', function(address, port) {
-      GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Connected to ${address}:${port}.`);
+      GLOBAL.logger.debug(`${self._pluginName}|${self._id}: Connected to ${address}:${port}.`);
       self._AKP48.emit('serverConnect', self._id, self);
     });
 
     this._client.on('disconnected', function(reason) {
-      GLOBAL.logger.silly(`${self._pluginName}|${self._id}: Disconnected from server for "${reason}".`);
+      GLOBAL.logger.debug(`${self._pluginName}|${self._id}: Disconnected from server for "${reason}".`);
     });
 
     this._client.on('error', function(message) {
