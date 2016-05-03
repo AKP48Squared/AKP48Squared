@@ -9,6 +9,6 @@
   "author": "Austin Peterson <austin@akpwebdesign.com>",
   "license": "MIT",
   "dependencies": {
-    "discordie": "^0.4.3"
+    "discordie": "^0.5.7"
   }
 }
