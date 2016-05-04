@@ -24,6 +24,8 @@ class IRC extends ServerConnectorPlugin {
       this._client.removeAllListeners('kick');
       this._client.removeAllListeners('error');
       this._client.removeAllListeners('action');
+      this._client.removeAllListeners('join');
+      this._client.removeAllListeners('part');
       this._connected = true;
     } else {
       this._client = new irc.Client(config.server, config.nick, {
@@ -51,6 +53,16 @@ class IRC extends ServerConnectorPlugin {
     this._client.on('registered', function() {
       GLOBAL.logger.verbose(`${self._pluginName}|${self._id}: Connected to ${self._config.server}.`);
       self._AKP48.emit('registeredOnServer', this._id, this);
+    });
+
+    this._client.on('join', function(chan, nick) {
+      GLOBAL.logger.stupid(`${self._pluginName}|${self._id}: Caught join event on ${self._config.server}.`);
+      self._AKP48.emit('ircJoin', chan, nick, this);
+    });
+
+    this._client.on('part', function(chan, nick, reason) {
+      GLOBAL.logger.stupid(`${self._pluginName}|${self._id}: Caught join event on ${self._config.server}.`);
+      self._AKP48.emit('ircPart', chan, nick, reason, this);
     });
 
     this._client.on('invite', function(channel, from) {
