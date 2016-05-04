@@ -61,7 +61,7 @@ class IRC extends ServerConnectorPlugin {
     });
 
     this._client.on('part', function(chan, nick, reason) {
-      GLOBAL.logger.stupid(`${self._pluginName}|${self._id}: Caught join event on ${self._config.server}.`);
+      GLOBAL.logger.stupid(`${self._pluginName}|${self._id}: Caught part event on ${self._config.server}.`);
       self._AKP48.emit('ircPart', chan, nick, reason, this);
     });
 
