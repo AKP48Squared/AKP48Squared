@@ -50,6 +50,7 @@ class IRC extends ServerConnectorPlugin {
 
     this._client.on('registered', function() {
       GLOBAL.logger.verbose(`${self._pluginName}|${self._id}: Connected to ${self._config.server}.`);
+      self._AKP48.emit('registeredOnServer', this._id, this);
     });
 
     this._client.on('invite', function(channel, from) {
