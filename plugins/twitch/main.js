@@ -10,13 +10,13 @@ class Twitch extends ServerConnectorPlugin {
     this._defaultCommandDelimiters = ['!', '.'];
     var self = this;
     if(!config || !config.channels) {
-      GLOBAL.logger.error(`${self._pluginName}|${self._id}: Required channels option missing from config!`);
+      global.logger.error(`${self._pluginName}|${self._id}: Required channels option missing from config!`);
       this._error = true;
       return;
     }
 
     if(!config.identity || !config.identity.username || !config.identity.password) {
-      GLOBAL.logger.warn(`${self._pluginName}|${self._id}: No complete identity found in config! Are you sure this is what you want?`);
+      global.logger.warn(`${self._pluginName}|${self._id}: No complete identity found in config! Are you sure this is what you want?`);
     }
 
     if(persistentObjects) {
@@ -44,20 +44,20 @@ class Twitch extends ServerConnectorPlugin {
     });
 
     this._client.on('connecting', function(address, port) {
-      GLOBAL.logger.verbose(`${self._pluginName}|${self._id}: Connecting to ${address}:${port}.`);
+      global.logger.verbose(`${self._pluginName}|${self._id}: Connecting to ${address}:${port}.`);
     });
 
     this._client.on('connected', function(address, port) {
-      GLOBAL.logger.debug(`${self._pluginName}|${self._id}: Connected to ${address}:${port}.`);
+      global.logger.debug(`${self._pluginName}|${self._id}: Connected to ${address}:${port}.`);
       self._AKP48.emit('serverConnect', self._id, self);
     });
 
     this._client.on('disconnected', function(reason) {
-      GLOBAL.logger.debug(`${self._pluginName}|${self._id}: Disconnected from server for "${reason}".`);
+      global.logger.debug(`${self._pluginName}|${self._id}: Disconnected from server for "${reason}".`);
     });
 
     this._client.on('error', function(message) {
-      GLOBAL.logger.error(`${self._pluginName}|${self._id}: Error received from ${message.server}! ${message.command}: ${message.args}`);
+      global.logger.error(`${self._pluginName}|${self._id}: Error received from ${message.server}! ${message.command}: ${message.args}`);
     });
 
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
@@ -78,11 +78,11 @@ class Twitch extends ServerConnectorPlugin {
 
   connect() {
     if(this._error) {
-      GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
+      global.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
       return;
     }
     if(this._connected) {
-      GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Using previous connection.`);
+      global.logger.debug(`${this._pluginName}|${this._id}: Using previous connection.`);
       this._connected = false;
     } else {
       this._client.connect();
@@ -91,7 +91,7 @@ class Twitch extends ServerConnectorPlugin {
 
   disconnect(msg) {
     if(this._error) {
-      GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot disconnect. Check log for errors.`);
+      global.logger.error(`${this._pluginName}|${this._id}: Cannot disconnect. Check log for errors.`);
       return;
     }
     this._client.disconnect(msg || 'Goodbye.');

@@ -9,7 +9,7 @@ class LinkHandler extends MessageHandlerPlugin {
 }
 
 LinkHandler.prototype.handleMessage = function (message, context, res) {
-  GLOBAL.logger.stupid(`${this._pluginName}: Received message.`);
+  global.logger.stupid(`${this._pluginName}: Received message.`);
   res(false);
 
   //check message to see if it matches a weblink.
@@ -25,7 +25,7 @@ LinkHandler.prototype.handleMessage = function (message, context, res) {
 };
 
 LinkHandler.prototype.handleLink = function (url, context) {
-  GLOBAL.logger.silly(`${this._pluginName}: Attempting to handle link.`);
+  global.logger.silly(`${this._pluginName}: Attempting to handle link.`);
   this._AKP48.sendMessage(context.instanceId, context.to, `I found a link! It's '${url}'.`, context);
 };
 

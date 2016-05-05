@@ -18,15 +18,15 @@ class IRCCommands extends BasicCommands {
   }
 
   handleCommand(message, context, resolve) {
-    GLOBAL.logger.silly(`${this._pluginName}: Received command.`);
+    global.logger.silly(`${this._pluginName}: Received command.`);
     // if this isn't an IRC instance, drop the command.
     if(!context.instanceType || context.instanceType !== 'irc') {
-      GLOBAL.logger.silly(`${this._pluginName}: Dropping command; not IRC instance.`);
+      global.logger.silly(`${this._pluginName}: Dropping command; not IRC instance.`);
       return;
     }
 
     //run the handleCommand logic from BasicCommands, which should use our defined commands instead.
-    GLOBAL.logger.silly(`${this._pluginName}: Attempting to handle command using BasicCommands logic.`);
+    global.logger.silly(`${this._pluginName}: Attempting to handle command using BasicCommands logic.`);
     super.handleCommand(message, context, resolve);
   }
 }

@@ -12,7 +12,7 @@ Nick.prototype.respond = function (context) {
     conf.nick = context.text;
     context.instance._client.opt.nick = context.text;
 
-    GLOBAL.AKP48.saveConfig(conf, context.instanceId, true);
+    global.AKP48.saveConfig(conf, context.instanceId, true);
   }
 
   return null;

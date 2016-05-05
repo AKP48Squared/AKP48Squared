@@ -11,7 +11,7 @@ class IRC extends ServerConnectorPlugin {
     this._defaultCommandDelimiters = ['!', '.'];
     var self = this;
     if(!config || !config.server || !config.nick) {
-      GLOBAL.logger.error(`${self._pluginName}|${self._id}: Required server and/or nick options missing from config!`);
+      global.logger.error(`${self._pluginName}|${self._id}: Required server and/or nick options missing from config!`);
       this._error = true;
       return;
     }
@@ -51,22 +51,22 @@ class IRC extends ServerConnectorPlugin {
     });
 
     this._client.on('registered', function() {
-      GLOBAL.logger.verbose(`${self._pluginName}|${self._id}: Connected to ${self._config.server}.`);
+      global.logger.verbose(`${self._pluginName}|${self._id}: Connected to ${self._config.server}.`);
       self._AKP48.emit('registeredOnServer', this._id, this);
     });
 
     this._client.on('join', function(chan, nick) {
-      GLOBAL.logger.stupid(`${self._pluginName}|${self._id}: Caught join event on ${self._config.server}.`);
+      global.logger.stupid(`${self._pluginName}|${self._id}: Caught join event on ${self._config.server}.`);
       self._AKP48.emit('ircJoin', chan, nick, self._client);
     });
 
     this._client.on('part', function(chan, nick, reason) {
-      GLOBAL.logger.stupid(`${self._pluginName}|${self._id}: Caught part event on ${self._config.server}.`);
+      global.logger.stupid(`${self._pluginName}|${self._id}: Caught part event on ${self._config.server}.`);
       self._AKP48.emit('ircPart', chan, nick, reason, self._client);
     });
 
     this._client.on('invite', function(channel, from) {
-      GLOBAL.logger.debug(`${self._pluginName}|${self._id}: Invite to channel "${channel}" received from ${from}. Joining channel.`);
+      global.logger.debug(`${self._pluginName}|${self._id}: Invite to channel "${channel}" received from ${from}. Joining channel.`);
       self._client.join(channel, function() {
         var joinMsg = `Hello, everyone! I'm ${self._client.nick}! I respond to commands and generally try to be helpful. For more information, say ".help"!`;
         self._client.say(channel, joinMsg);
@@ -77,7 +77,7 @@ class IRC extends ServerConnectorPlugin {
 
     this._client.on('kick', function(channel, nick, by, reason) {
       if(nick === self._client.nick) {
-        GLOBAL.logger.debug(`${self._pluginName}|${self._id}: Kicked from ${channel} by ${by} for "${reason}". Removing channel from config.`);
+        global.logger.debug(`${self._pluginName}|${self._id}: Kicked from ${channel} by ${by} for "${reason}". Removing channel from config.`);
         var index = self._config.channels.indexOf(channel);
         while(index > -1) {
           self._config.channels.splice(index, 1);
@@ -88,7 +88,7 @@ class IRC extends ServerConnectorPlugin {
     });
 
     this._client.on('error', function(message) {
-      GLOBAL.logger.error(`${self._pluginName}|${self._id}: Error received from ${message.server}! ${message.command}: ${message.args}`);
+      global.logger.error(`${self._pluginName}|${self._id}: Error received from ${message.server}! ${message.command}: ${message.args}`);
     });
 
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
@@ -117,11 +117,11 @@ class IRC extends ServerConnectorPlugin {
 
   connect() {
     if(this._error) {
-      GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
+      global.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
       return;
     }
     if(this._connected) {
-      GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Using previous connection.`);
+      global.logger.debug(`${this._pluginName}|${this._id}: Using previous connection.`);
       this._connected = false;
     } else {
       this._client.connect();
@@ -131,7 +131,7 @@ class IRC extends ServerConnectorPlugin {
 
   disconnect(msg) {
     if(this._error) {
-      GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot disconnect. Check log for errors.`);
+      global.logger.error(`${this._pluginName}|${this._id}: Cannot disconnect. Check log for errors.`);
       return;
     }
     this._client.disconnect(msg || 'Goodbye.');

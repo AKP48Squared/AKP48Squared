@@ -27,22 +27,22 @@ function load(persistObjs, startTime) {
   logger.info('AKP48 is starting.');
 
   //logger goes in global scope.
-  GLOBAL.logger = logger;
+  global.logger = logger;
 
   //load the bot.
-  GLOBAL.AKP48 = new AKP48(config, reload, persistObjs, startTime);
+  global.AKP48 = new AKP48(config, reload, persistObjs, startTime);
 }
 
 function reload(persistObjs, startTime) {
-  delete GLOBAL.AKP48;
-  GLOBAL.logger.info('Reloading AKP48.');
-  delete GLOBAL.logger;
+  delete global.AKP48;
+  global.logger.info('Reloading AKP48.');
+  delete global.logger;
   load(persistObjs, startTime);
 }
 
 load();
 
 process.on('uncaughtException', function(err) {
-  GLOBAL.logger.error(`Uncaught Exception! Error: ${err}.`);
+  global.logger.error(`Uncaught Exception! Error: ${err}.`);
   console.log(err.stack);
 });

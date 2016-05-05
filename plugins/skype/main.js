@@ -10,12 +10,12 @@ class Skype extends ServerConnectorPlugin {
     this._id = id;
     this._config = config;
     if(!config || !config.appId || !config.appSecret) {
-      GLOBAL.logger.error(`${this._pluginName}: Required appId and/or appSecret options missing from config!`);
+      global.logger.error(`${this._pluginName}: Required appId and/or appSecret options missing from config!`);
       this._error = true;
       return;
     }
     if(!config.keyLoc || !config.certLoc) {
-      GLOBAL.logger.error(`${this._pluginName}: No certificate and/or key found! Cannot start Skype plugin.`);
+      global.logger.error(`${this._pluginName}: No certificate and/or key found! Cannot start Skype plugin.`);
       this._error = true;
       return;
     }
@@ -63,22 +63,22 @@ class Skype extends ServerConnectorPlugin {
 
   connect() {
     if(this._error) {
-      GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
+      global.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
       return;
     }
     if(this._connected) {
-      GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Using previous server.`);
+      global.logger.debug(`${this._pluginName}|${this._id}: Using previous server.`);
       this._connected = false;
     } else {
       this._server.listen(this._port);
-      GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Server listening for incoming requests on port ${this._port}.`);
+      global.logger.debug(`${this._pluginName}|${this._id}: Server listening for incoming requests on port ${this._port}.`);
     }
     this._AKP48.emit('serverConnect', this._id, this);
   }
 
   disconnect() {
     if(this._error) {
-      GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
+      global.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
       return;
     }
     this._server.close();

@@ -11,7 +11,7 @@ class Discord extends ServerConnectorPlugin {
     this._defaultCommandDelimiters = ['!', '.'];
     var self = this;
     if(!config || !config.token) {
-      GLOBAL.logger.error(`${self._pluginName}|${self._id}: Required token option missing from config!`);
+      global.logger.error(`${self._pluginName}|${self._id}: Required token option missing from config!`);
       this._error = true;
       return;
     }
@@ -23,7 +23,7 @@ class Discord extends ServerConnectorPlugin {
       this._client.Dispatcher.removeAllListeners('MESSAGE_CREATE');
       this._client.Dispatcher.removeAllListeners('DISCONNECTED');
       this._connected = true;
-      GLOBAL.logger.verbose(`${self._pluginName}|${self._id}: Current state: ${this._client.state}.`);
+      global.logger.verbose(`${self._pluginName}|${self._id}: Current state: ${this._client.state}.`);
       //if client state is DISCONNECTED for some reason, we should try to reconnect now.
       if(this._client.state === 'DISCONNECTED' || !this._client.connected) {
         this.connect();
@@ -33,7 +33,7 @@ class Discord extends ServerConnectorPlugin {
     }
 
     this._client.Dispatcher.on('GATEWAY_READY', () => {
-      GLOBAL.logger.debug(`${self._pluginName}|${self._id}: Connected as ${this._client.User.username}.`);
+      global.logger.debug(`${self._pluginName}|${self._id}: Connected as ${this._client.User.username}.`);
       //set game status if configured.
       if(this._config.game) {
         this._client.User.setStatus('idle', {name: `${this._config.game}.`});
@@ -41,7 +41,7 @@ class Discord extends ServerConnectorPlugin {
     });
 
     this._client.Dispatcher.on('GATEWAY_RESUMED', () => {
-      GLOBAL.logger.debug(`${self._pluginName}|${self._id}: Reconnected as ${this._client.User.username}.`);
+      global.logger.debug(`${self._pluginName}|${self._id}: Reconnected as ${this._client.User.username}.`);
       self._AKP48.emit('serverConnect', self._id, self);
       //set game status if configured.
       if(this._config.game) {
@@ -54,7 +54,7 @@ class Discord extends ServerConnectorPlugin {
     });
 
     this._client.Dispatcher.on('DISCONNECTED', (err) => {
-      GLOBAL.logger.error(`${self._pluginName}|${self._id}: Disconnected from server. Error message: "${err.message}."`);
+      global.logger.error(`${self._pluginName}|${self._id}: Disconnected from server. Error message: "${err.message}."`);
       self.connect(); // if we get disconnected, try to reconnect. This event won't fire when we purposely disconnect, so this is fine.
     });
 
@@ -79,11 +79,11 @@ class Discord extends ServerConnectorPlugin {
 
   connect() {
     if(this._error) {
-      GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
+      global.logger.error(`${this._pluginName}|${this._id}: Cannot connect. Check log for errors.`);
       return;
     }
     if(this._connected) {
-      GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Reusing previous connection.`);
+      global.logger.debug(`${this._pluginName}|${this._id}: Reusing previous connection.`);
       //set game status if configured.
       if(this._config.game) {
         this._client.User.setStatus('idle', {name: `${this._config.game}.`});
@@ -91,17 +91,17 @@ class Discord extends ServerConnectorPlugin {
       this._connected = false;
       return;
     } else {
-      GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Connecting...`);
+      global.logger.debug(`${this._pluginName}|${this._id}: Connecting...`);
       this._client.connect({token: this._config.token});
     }
   }
 
   disconnect() {
     if(this._error) {
-      GLOBAL.logger.error(`${this._pluginName}|${this._id}: Cannot disconnect. Check log for errors.`);
+      global.logger.error(`${this._pluginName}|${this._id}: Cannot disconnect. Check log for errors.`);
       return;
     }
-    GLOBAL.logger.debug(`${this._pluginName}|${this._id}: Disconnecting.`);
+    global.logger.debug(`${this._pluginName}|${this._id}: Disconnecting.`);
     this._client.disconnect();
   }
 }
