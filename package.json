@@ -4,22 +4,26 @@
   "description": "A chat bot, extensible via plugins which allow it to connect to servers and respond to commands.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preversion": "git checkout master && git pull && npm ls",
+    "publish-patch": "npm run preversion && npm version patch && git push origin master --tags && npm publish",
+    "publish-minor": "npm run preversion && npm version minor && git push origin master --tags && npm publish",
+    "publish-major": "npm run preversion && npm version major && git push origin master --tags && npm publish"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AKPWebDesign/AKP48Squared.git"
   },
-  "author": "Austin Peterson <austin@akpwebdesign.com>",
+  "author": "Austin Peterson <austin@akpwebdesign.com> (http://akpwebdesign.com/)",
   "contributors": [
     "Alan H (Feildmaster) <admin@feildmaster.com> (http://feildmaster.com/)",
-    "Austin Peterson <austin@akpwebdesign.com>"
+    "Austin Peterson <austin@akpwebdesign.com> (http://akpwebdesign.com/)"
   ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/AKPWebDesign/AKP48Squared/issues"
   },
-  "homepage": "https://github.com/AKPWebDesign/AKP48Squared#readme",
+  "homepage": "https://github.com/AKPWebDesign/AKP48Squared",
   "dependencies": {
     "akp48-plugin-ayy-lmao-response": "^1.0.1",
     "akp48-plugin-basic-commands": "^1.0.3",
@@ -39,5 +43,6 @@
     "node-uuid": "^1.4.7",
     "shelljs": "^0.6.0",
     "winston": "^2.2.0"
-  }
+  },
+  "private": true
 }
