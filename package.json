@@ -22,7 +22,7 @@
   "homepage": "https://github.com/AKPWebDesign/AKP48Squared#readme",
   "dependencies": {
     "akp48-plugin-ayy-lmao-response": "^1.0.1",
-    "akp48-plugin-basic-commands": "^1.0.2",
+    "akp48-plugin-basic-commands": "^1.0.3",
     "akp48-plugin-conversion-commands": "^1.0.0",
     "akp48-plugin-custom-commands": "^1.0.1",
     "akp48-plugin-github-listener": "^1.0.1",
