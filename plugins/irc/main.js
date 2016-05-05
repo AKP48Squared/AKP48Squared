@@ -38,6 +38,11 @@ class IRC extends ServerConnectorPlugin {
       });
     }
 
+    this._client.on('nick', (oldNick, newNick) => {
+      global.logger.stupid(`${self._pluginName}|${self._id}: Caught nick change event. "${oldNick}" => "${newNick}"`);
+      self._AKP48.emit('nick', oldNick, newNick, self);
+    });
+
     this._client.on('message', function(nick, to, text, message) {
       if(to === config.nick) { to = nick; }
       self._AKP48.onMessage(text, self.createContextsFromMessage(message, to));
@@ -52,19 +57,19 @@ class IRC extends ServerConnectorPlugin {
 
     this._client.on('registered', function() {
       global.logger.verbose(`${self._pluginName}|${self._id}: Connected to ${self._config.server}.`);
-      self._AKP48.emit('registeredOnServer', this._id, this);
+      self._AKP48.emit('registeredOnServer', self._id, self);
     });
 
     this._client.on('join', function(chan, nick) {
       if(nick === self._client.nick) { return; }
       global.logger.stupid(`${self._pluginName}|${self._id}: Caught join event on ${self._config.server}.`);
-      self._AKP48.emit('ircJoin', chan, nick, self._client);
+      self._AKP48.emit('ircJoin', chan, nick, self);
     });
 
     this._client.on('part', function(chan, nick, reason) {
       if(nick === self._client.nick) { return; }
       global.logger.stupid(`${self._pluginName}|${self._id}: Caught part event on ${self._config.server}.`);
-      self._AKP48.emit('ircPart', chan, nick, reason, self._client);
+      self._AKP48.emit('ircPart', chan, nick, reason, self);
     });
 
     this._client.on('invite', function(channel, from) {
