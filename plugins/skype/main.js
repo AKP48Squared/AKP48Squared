@@ -56,7 +56,7 @@ class Skype extends ServerConnectorPlugin {
 
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
       message = c.stripColorsAndStyle(message);
-      context.bot.reply(message);
+      new skype.Bot(to, this._botService).reply(message);
       self._AKP48.sentMessage(to, message, context);
     });
   }
