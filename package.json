@@ -33,6 +33,7 @@
     "akp48-plugin-google-commands": "^1.0.0",
     "akp48-plugin-logger": "^1.0.1",
     "akp48-plugin-randomization-commands": "^1.0.12",
+    "akp48-plugin-server-bridge": "^1.0.0",
     "app-root-path": "^1.0.0",
     "bluebird": "^3.3.5",
     "enum": "^2.3.0",
