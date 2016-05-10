@@ -24,7 +24,7 @@ class Skype extends ServerConnectorPlugin {
 
     this._botService = new skype.BotService({
       messaging: {
-        botId: '28:'+config.appId,
+        botId: '28:'+config.botId,
         serverUrl : 'https://apis.skype.com',
         requestTimeout : 15000,
         appId: config.appId,
