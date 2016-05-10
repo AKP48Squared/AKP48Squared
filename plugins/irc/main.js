@@ -100,13 +100,21 @@ class IRC extends ServerConnectorPlugin {
 
     this._AKP48.on('msg_'+this._id, function(to, message, context) {
       if(!context.noPrefix) {message = `${context.nick}: ${message}`;}
-      self._client.say(to, message);
-      self._AKP48.sentMessage(to, message, context);
+      try {
+        self._client.say(to, message);
+        self._AKP48.sentMessage(to, message, context);
+      } catch (e) {
+        global.logger.error(`${self._pluginName}|${self._id}: Error sending message to channel '${to}'! ${e.name}: ${e.message}`);
+      }
     });
 
     this._AKP48.on('emote_'+this._id, function(to, message, context) {
-      self._client.action(to, message);
-      self._AKP48.sentMessage(to, message, context);
+      try {
+        self._client.action(to, message);
+        self._AKP48.sentMessage(to, message, context);
+      } catch (e) {
+        global.logger.error(`${self._pluginName}|${self._id}: Error sending action to channel '${to}'! ${e.name}: ${e.message}`);
+      }
     });
 
     this._AKP48.on('alert', function(message) {
@@ -114,8 +122,12 @@ class IRC extends ServerConnectorPlugin {
         var chan = self._config.channels[i];
         if(self._config.chanConfig && self._config.chanConfig[chan]) {
           if(self._config.chanConfig[chan].alert) {
-            self._client.say(chan, message);
-            self._AKP48.sentMessage(chan, message, {instanceId: self._id, myNick: self._client.nick});
+            try {
+              self._client.say(chan, message);
+              self._AKP48.sentMessage(chan, message, {instanceId: self._id, myNick: self._client.nick});
+            } catch (e) {
+              global.logger.error(`${self._pluginName}|${self._id}: Error sending alert to channel '${chan}'! ${e.name}: ${e.message}`);
+            }
           }
         }
       }
