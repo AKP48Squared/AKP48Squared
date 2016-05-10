@@ -30,7 +30,7 @@ function load(persistObjs, startTime) {
   global.logger = logger;
 
   //load the bot.
-  global.AKP48 = new AKP48(config, getConfigDir(), reload, persistObjs, startTime);
+  global.AKP48 = new AKP48(config, {dir: getConfigDir(), file: getConfigFile()}, reload, persistObjs, startTime);
 }
 
 function reload(persistObjs, startTime) {
