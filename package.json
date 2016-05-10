@@ -44,6 +44,5 @@
     "node-uuid": "^1.4.7",
     "shelljs": "^0.6.0",
     "winston": "^2.2.0"
-  },
-  "private": true
+  }
 }
