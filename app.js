@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 function load(persistObjs, startTime) {
   require('./lib/polyfill'); //load polyfill
   var AKP48 = require('./lib/AKP48');
