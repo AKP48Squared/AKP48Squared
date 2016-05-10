@@ -1,6 +1,0 @@
-{
-  "name": "twitch",
-  "type": "ServerConnector",
-  "description": "Used to connect AKP48 to Twitch IRC.",
-  "main": "main.js"
-}

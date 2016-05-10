@@ -1,6 +1,0 @@
-{
-  "name": "link-handler",
-  "type": "MessageHandler",
-  "description": "Provides information about certain links when AKP48 sees them in a message.",
-  "main": "main.js"
-}

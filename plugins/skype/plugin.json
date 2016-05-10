@@ -1,6 +1,0 @@
-{
-  "name": "skype",
-  "type": "ServerConnector",
-  "description": "Connects AKP48 to Skype.",
-  "main": "main.js"
-}
