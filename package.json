@@ -29,7 +29,7 @@
     "akp48-plugin-basic-commands": "^1.0.3",
     "akp48-plugin-conversion-commands": "^1.0.0",
     "akp48-plugin-custom-commands": "^1.0.2",
-    "akp48-plugin-github-listener": "^1.0.3",
+    "akp48-plugin-github-listener": "^1.0.4",
     "akp48-plugin-google-commands": "^1.0.0",
     "akp48-plugin-logger": "^1.0.1",
     "akp48-plugin-randomization-commands": "^1.0.12",
