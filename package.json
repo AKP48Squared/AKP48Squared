@@ -1,6 +1,6 @@
 {
-  "name": "akp48",
-  "version": "3.0.0",
+  "name": "akp48squared",
+  "version": "0.0.1-alpha",
   "description": "A chat bot, extensible via plugins which allow it to connect to servers and respond to commands.",
   "main": "app.js",
   "scripts": {
