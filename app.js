@@ -14,9 +14,9 @@ function load(persistObjs, startTime) {
   }
 
   try {
-    logger = require('./lib/Logger')(config.logger.level || 'info', config.logger.fileLevel || 'info');
+    logger = require('./lib/Logger')(config.logger.level || 'info', config.logger.fileLevel || 'info', getConfigDir());
   } catch(e) {
-    logger = require('./lib/Logger')('info', 'info');
+    logger = require('./lib/Logger')('info', 'info', getConfigDir());
   }
 
   try {
@@ -26,6 +26,7 @@ function load(persistObjs, startTime) {
   } catch(e) {}
 
   logger.info('AKP48 is starting.');
+  logger.info(`Configuration loaded from ${getConfigFile()}.`);
 
   //logger goes in global scope.
   global.logger = logger;
