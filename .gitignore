@@ -40,3 +40,6 @@ config.json
 certs
 *.crt
 *.key
+
+.gitmodules
+plugins/
