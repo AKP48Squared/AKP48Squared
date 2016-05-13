@@ -32,7 +32,15 @@ function load(persistObjs, startTime) {
   global.logger = logger;
 
   //load the bot.
-  global.AKP48 = new AKP48(config, {dir: getConfigDir(), file: getConfigFile()}, reload, persistObjs, startTime);
+  global.AKP48 = new AKP48(config, {dir: getConfigDir(), file: getConfigFile()}, reload, startTime);
+
+  //loads all available plugins.
+  global.AKP48.loadPlugins().then(function() {
+    //start the bot.
+    global.AKP48.start(persistObjs).then(function(){
+      global.AKP48.emit('loadFinished');
+    });
+  });
 }
 
 function reload(persistObjs, startTime) {
