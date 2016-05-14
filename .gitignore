@@ -43,3 +43,5 @@ certs
 
 .gitmodules
 plugins/
+/.gitmodules
+/plugins
