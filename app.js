@@ -54,6 +54,8 @@ function reload(persistObjs, startTime) {
 var flags = require('minimist')(process.argv.slice(2), {alias: {
   dir: 'd',
   config: 'conf',
+}, default: {
+  config: 'config.json',
 }});
 
 function getConfigDir() {
@@ -78,9 +80,8 @@ function getConfigDir() {
 
 function getConfigFile() {
   var path = require('path');
-  var conf = flags.config || 'config.json';
 
-  return path.resolve(getConfigDir(), conf);
+  return path.resolve(getConfigDir(), flags.config);
 }
 
 load();
