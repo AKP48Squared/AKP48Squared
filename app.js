@@ -50,16 +50,20 @@ function reload(persistObjs, startTime) {
   load(persistObjs, startTime);
 }
 
+//flags contains a nice object with our arguments. See https://www.npmjs.com/package/minimist for more details.
+var flags = require('minimist')(process.argv.slice(2), {alias: {
+  dir: 'd',
+  config: 'conf',
+}});
+
 function getConfigDir() {
-  //argv contains a nice object with our arguments. See https://www.npmjs.com/package/minimist for more details.
-  var argv = require('minimist')(process.argv.slice(2));
   var path = require('path');
   var homedir = require('homedir');
 
-  var conf = argv.config || argv.conf;
+  var dir = flags.dir;
 
-  if(conf) {
-    return path.resolve(path.dirname(conf));
+  if(dir) {
+    return path.resolve(path.dirname(dir));
   }
 
   switch(process.platform) {
@@ -73,16 +77,10 @@ function getConfigDir() {
 }
 
 function getConfigFile() {
-  //argv contains a nice object with our arguments. See https://www.npmjs.com/package/minimist for more details.
-  var argv = require('minimist')(process.argv.slice(2));
   var path = require('path');
-  var conf = argv.config || argv.conf;
+  var conf = flags.config || 'config.json';
 
-  if(conf) {
-    return path.resolve(conf);
-  }
-
-  return path.resolve(getConfigDir(), 'config.json');
+  return path.resolve(getConfigDir(), conf);
 }
 
 load();
