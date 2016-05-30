@@ -7,6 +7,7 @@
     "akp48squared": "app.js",
     "akp48": "app.js"
   },
+  "preferGlobal": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "preversion": "git checkout master && git pull --ff-only",
