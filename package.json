@@ -32,7 +32,7 @@
     "akp48-plugin-conversion-commands": "^1.0.3",
     "akp48-plugin-custom-commands": "^1.1.1",
     "akp48-plugin-discord": "^1.0.3",
-    "akp48-plugin-github-listener": "^1.0.7",
+    "akp48-plugin-github-listener": "^1.0.8",
     "akp48-plugin-google-commands": "^1.0.2",
     "akp48-plugin-irc-commands": "^1.0.3",
     "akp48-plugin-irc-server": "^1.0.6",
