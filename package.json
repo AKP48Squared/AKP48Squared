@@ -53,6 +53,7 @@
     "mkdirp": "^0.5.1",
     "node-uuid": "^1.4.7",
     "shelljs": "^0.6.0",
+    "string-argv": "0.0.2",
     "winston": "^2.2.0"
   }
 }
