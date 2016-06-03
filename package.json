@@ -41,7 +41,7 @@
     "akp48-plugin-logger": "^1.0.4",
     "akp48-plugin-randomization-commands": "^1.0.15",
     "akp48-plugin-server-bridge": "^1.0.6",
-    "akp48-plugin-skype": "^1.0.3",
+    "akp48-plugin-skype": "^1.0.4",
     "akp48-plugin-twitch": "^1.0.3",
     "app-root-path": "^1.0.0",
     "bluebird": "^3.3.5",
