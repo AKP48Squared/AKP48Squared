@@ -40,20 +40,7 @@ function load(persistObjs, startTime, isReload) {
     global.AKP48.start(persistObjs).then(function(){
       global.AKP48.emit('loadFinished');
       if(isReload) {
-        //construct a new Context in order to send an alert.
-        var ctx = new global.AKP48.Context({
-          instance: {id: 'GLOBAL', name: 'GLOBAL'},
-          instanceType: 'GLOBAL',
-          nick: 'GLOBAL',
-          text: 'Reload complete.',
-          to: 'GLOBAL',
-          user: `GLOBAL`,
-          commandDelimiters: '',
-          myNick: 'GLOBAL',
-          permissions: [],
-          isAlert: true
-        });
-        global.AKP48.sendMessage(ctx.text(), ctx);
+        global.AKP48.sendAlert('Reload complete.');
       }
     });
   });
