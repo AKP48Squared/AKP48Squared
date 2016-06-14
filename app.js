@@ -8,6 +8,14 @@ function load(persistObjs, startTime) {
   try {
     config = require(getConfigFile());
   } catch(e) {
+    //check for SyntaxError and quit if so.
+    if(e instanceof SyntaxError) {
+      console.log(`The provided config file includes a syntax error: ${e.message}`);
+      console.log(`Fix your JSON syntax and restart the program.`);
+      process.exit(0);
+      return;
+    }
+
     console.log('No config file found.');
     //no config, so set config to null.
     config = null;
