@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-function load(persistObjs, startTime) {
+function load(persistObjs, startTime, isReload) {
   require('./lib/polyfill'); //load polyfill
   var AKP48 = require('./lib/AKP48');
   var config;
@@ -47,6 +47,9 @@ function load(persistObjs, startTime) {
     //start the bot.
     global.AKP48.start(persistObjs).then(function(){
       global.AKP48.emit('loadFinished');
+      if(isReload) {
+        global.AKP48.sendAlert('Reload complete.');
+      }
     });
   });
 }
@@ -55,7 +58,7 @@ function reload(persistObjs, startTime) {
   delete global.AKP48;
   global.logger.info('Reloading AKP48.');
   delete global.logger;
-  load(persistObjs, startTime);
+  load(persistObjs, startTime, true);
 }
 
 //flags contains a nice object with our arguments. See https://www.npmjs.com/package/minimist for more details.
