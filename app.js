@@ -87,7 +87,7 @@ function getConfigDir() {
   var dir = flags.dir;
 
   if(dir) {
-    return path.resolve(path.dirname(dir));
+    return path.resolve(dir);
   }
 
   switch(process.platform) {
@@ -102,7 +102,6 @@ function getConfigDir() {
 
 function getConfigFile() {
   var path = require('path');
-
   return path.resolve(getConfigDir(), flags.config);
 }
 
