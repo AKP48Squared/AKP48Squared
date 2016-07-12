@@ -10,8 +10,14 @@
   "preferGlobal": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "forever": "forever app.js",
     "preversion": "git checkout master && git pull --ff-only",
     "postversion": "git push origin master --tags && npm publish"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">=6.0.0"
   },
   "repository": {
     "type": "git",
