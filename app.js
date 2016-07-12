@@ -98,6 +98,6 @@ function getConfigFile() {
 load();
 
 process.on('uncaughtException', function(err) {
-  global.logger.error(`Uncaught Exception! Error: ${err}.`);
+  global.logger.error(`Uncaught Exception! Error: ${err.name}, Code: ${err.code || 'null'}, Message: ${err.message || 'null'}`);
   console.log(err.stack);
 });
