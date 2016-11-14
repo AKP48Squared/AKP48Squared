@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-function load(persistObjs, startTime) {
+function load(persistObjs, startTime, isReload) {
   require('./lib/polyfill'); //load polyfill
   var AKP48 = require('./lib/AKP48');
   var config;
@@ -8,6 +8,14 @@ function load(persistObjs, startTime) {
   try {
     config = require(getConfigFile());
   } catch(e) {
+    //check for SyntaxError and quit if so.
+    if(e instanceof SyntaxError) {
+      console.log(`The provided config file includes a syntax error: ${e.message}`);
+      console.log(`Fix your JSON syntax and restart the program.`);
+      process.exit(0);
+      return;
+    }
+
     console.log('No config file found.');
     //no config, so set config to null.
     config = null;
@@ -39,6 +47,9 @@ function load(persistObjs, startTime) {
     //start the bot.
     global.AKP48.start(persistObjs).then(function(){
       global.AKP48.emit('loadFinished');
+      if(isReload) {
+        global.AKP48.sendAlert('Reload complete.');
+      }
     });
   });
 }
@@ -47,7 +58,7 @@ function reload(persistObjs, startTime) {
   delete global.AKP48;
   global.logger.info('Reloading AKP48.');
   delete global.logger;
-  load(persistObjs, startTime);
+  load(persistObjs, startTime, true);
 }
 
 //flags contains a nice object with our arguments. See https://www.npmjs.com/package/minimist for more details.
@@ -87,6 +98,6 @@ function getConfigFile() {
 load();
 
 process.on('uncaughtException', function(err) {
-  global.logger.error(`Uncaught Exception! Error: ${err}.`);
+  global.logger.error(`Uncaught Exception! Error: ${err.name}, Code: ${err.code || 'null'}, Message: ${err.message || 'null'}`);
   console.log(err.stack);
 });

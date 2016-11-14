@@ -1,6 +1,6 @@
 {
   "name": "akp48squared",
-  "version": "0.0.1-alpha.15",
+  "version": "0.0.2-alpha.0",
   "description": "A chat bot, extensible via plugins which allow it to connect to servers and respond to commands.",
   "main": "app.js",
   "bin": {
@@ -10,8 +10,14 @@
   "preferGlobal": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "forever": "forever app.js",
     "preversion": "git checkout master && git pull --ff-only",
     "postversion": "git push origin master --tags && npm publish"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">=6.0.0"
   },
   "repository": {
     "type": "git",
@@ -28,21 +34,7 @@
   },
   "homepage": "https://github.com/AKPWebDesign/AKP48Squared",
   "dependencies": {
-    "akp48-plugin-ayy-lmao-response": "^1.0.8",
-    "akp48-plugin-basic-commands": "^1.0.6",
-    "akp48-plugin-conversion-commands": "^1.0.3",
-    "akp48-plugin-custom-commands": "^1.1.1",
-    "akp48-plugin-discord": "^1.0.4",
-    "akp48-plugin-github-listener": "^1.0.12",
-    "akp48-plugin-google-commands": "^1.0.2",
-    "akp48-plugin-irc-commands": "^1.0.4",
-    "akp48-plugin-irc-server": "^1.0.7777777",
-    "akp48-plugin-link-handler": "^1.0.3",
-    "akp48-plugin-logger": "^1.0.4",
-    "akp48-plugin-randomization-commands": "^1.0.15",
-    "akp48-plugin-server-bridge": "^1.0.6",
-    "akp48-plugin-skype": "^1.0.5",
-    "akp48-plugin-twitch": "^1.0.3",
+    "akp48-context": "0.0.4",
     "app-root-path": "^1.0.0",
     "bluebird": "^3.3.5",
     "enum": "^2.3.0",
@@ -54,6 +46,7 @@
     "mkdirp": "^0.5.1",
     "node-uuid": "^1.4.7",
     "shelljs": "^0.6.0",
+    "string-argv": "0.0.2",
     "winston": "^2.2.0"
   }
 }
