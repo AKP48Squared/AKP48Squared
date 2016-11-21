@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/AKPWebDesign/AKP48Squared",
   "dependencies": {
-    "akp48-context": "0.0.4",
+    "akp48-context": "0.0.5",
     "app-root-path": "^1.0.0",
     "bluebird": "^3.3.5",
     "enum": "^2.3.0",
