@@ -38,6 +38,7 @@
     "app-root-path": "^1.0.0",
     "bluebird": "^3.3.5",
     "enum": "^2.3.0",
+    "firebase-admin": "^4.0.4",
     "glob": "^7.0.3",
     "homedir": "^0.6.0",
     "irc-colors": "^1.2.1",
